@@ -64,10 +64,11 @@ class Driver(object):
         '''Continuously listen for keyboard input and update control values.
            When a steering key (left/right) is pressed, if it is in the opposite direction
            of the last press, reset steer to zero before applying the new adjustment.
-           Note: Left and right arrow key functions are inverted:
-           - Right arrow behaves as left (steer decreases by 0.1).
-           - Left arrow behaves as right (steer increases by 0.1).
+           Left and right arrow key functions are inverted:
+             - Right arrow behaves as left (steer decreases by 0.1).
+             - Left arrow behaves as right (steer increases by 0.1).
            "z" is used for gear up and "x" for gear down.
+           For a smooth gear down, acceleration is reduced before shifting.
         '''
         # Initialize the last steer direction
         self.last_steer_direction = None
@@ -78,8 +79,7 @@ class Driver(object):
             while True:
                 if msvcrt.kbhit():
                     key = msvcrt.getch()
-                    # Arrow keys return a prefix byte (b'\xe0') then the actual key code
-                    if key == b'\xe0':
+                    if key == b'\xe0':  # Arrow key prefix
                         key = msvcrt.getch()
                         if key == b'H':  # Up arrow: accelerate
                             self.control.accel = min(self.control.accel + 0.1, 1.0)
@@ -90,7 +90,6 @@ class Driver(object):
                             self.control.accel = 0.0
                             print("Brake:", self.control.brake)
                         elif key == b'M':  # Right arrow (inverted: behaves as left)
-                            # For left turn: if last direction isn't left or steer is positive, reset to 0.
                             if self.last_steer_direction != "left" or self.control.steer > 0:
                                 self.control.steer = 0.0
                                 self.last_steer_direction = "left"
@@ -100,7 +99,6 @@ class Driver(object):
                                 self.control.steer = max(self.control.steer, -1.0)
                                 print("Right arrow pressed (inverted to left): steer =", self.control.steer)
                         elif key == b'K':  # Left arrow (inverted: behaves as right)
-                            # For right turn: if last direction isn't right or steer is negative, reset to 0.
                             if self.last_steer_direction != "right" or self.control.steer < 0:
                                 self.control.steer = 0.0
                                 self.last_steer_direction = "right"
@@ -110,11 +108,15 @@ class Driver(object):
                                 self.control.steer = min(self.control.steer, 1.0)
                                 print("Left arrow pressed (inverted to right): steer =", self.control.steer)
                     else:
-                        # Use keys 'z' and 'x' for gear up and gear down
+                        # Gear controls: "z" for gear up, "x" for gear down.
                         if key.lower() == b'z':
                             self.control.gear += 1
                             print("Gear up:", self.control.gear)
                         elif key.lower() == b'x':
+                            # For smooth gear down, reduce acceleration first if needed.
+                            if self.control.accel > 0:
+                                self.control.accel = max(self.control.accel - 0.1, 0)
+                                print("Reducing acceleration for smooth gear down:", self.control.accel)
                             self.control.gear -= 1
                             print("Gear down:", self.control.gear)
                 time.sleep(0.05)
@@ -126,16 +128,16 @@ class Driver(object):
             tty.setcbreak(fd)
             try:
                 while True:
-                    dr, dw, de = select.select([sys.stdin], [], [], 0)
+                    dr, _, _ = select.select([sys.stdin], [], [], 0)
                     if dr:
                         key = sys.stdin.read(1)
-                        if key == '\x1b':  # possible escape sequence for arrow keys
+                        if key == '\x1b':  # Escape sequence for arrow keys
                             seq = sys.stdin.read(2)
-                            if seq == '[A':  # Up arrow
+                            if seq == '[A':  # Up arrow: accelerate
                                 self.control.accel = min(self.control.accel + 0.1, 1.0)
                                 self.control.brake = 0.0
                                 print("Accelerate:", self.control.accel)
-                            elif seq == '[B':  # Down arrow
+                            elif seq == '[B':  # Down arrow: brake
                                 self.control.brake = min(self.control.brake + 0.1, 1.0)
                                 self.control.accel = 0.0
                                 print("Brake:", self.control.brake)
@@ -161,6 +163,9 @@ class Driver(object):
                             self.control.gear += 1
                             print("Gear up:", self.control.gear)
                         elif key.lower() == 'x':
+                            if self.control.accel > 0:
+                                self.control.accel = max(self.control.accel - 0.1, 0)
+                                print("Reducing acceleration for smooth gear down:", self.control.accel)
                             self.control.gear -= 1
                             print("Gear down:", self.control.gear)
                     time.sleep(0.05)
