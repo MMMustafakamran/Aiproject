@@ -62,8 +62,16 @@ class Driver(object):
 
     def _manual_input_loop(self):
         '''Continuously listen for keyboard input and update control values.
-           Left/right arrow keys are inverted to match the game direction.
-           "z" is used for gear up and "x" for gear down.'''
+           When a steering key (left/right) is pressed, if it is in the opposite direction
+           of the last press, reset steer to zero before applying the new adjustment.
+           Note: Left and right arrow key functions are inverted:
+           - Right arrow behaves as left (steer decreases by 0.1).
+           - Left arrow behaves as right (steer increases by 0.1).
+           "z" is used for gear up and "x" for gear down.
+        '''
+        # Initialize the last steer direction
+        self.last_steer_direction = None
+
         # For Windows systems
         if sys.platform.startswith("win"):
             import msvcrt
@@ -81,12 +89,26 @@ class Driver(object):
                             self.control.brake = min(self.control.brake + 0.1, 1.0)
                             self.control.accel = 0.0
                             print("Brake:", self.control.brake)
-                        elif key == b'K':  # Left arrow: inverted to steer right
-                            self.control.steer = min(self.control.steer + 0.1, 1.0)
-                            print("Left arrow pressed (inverted to steer right):", self.control.steer)
-                        elif key == b'M':  # Right arrow: inverted to steer left
-                            self.control.steer = max(self.control.steer - 0.1, -1.0)
-                            print("Right arrow pressed (inverted to steer left):", self.control.steer)
+                        elif key == b'M':  # Right arrow (inverted: behaves as left)
+                            # For left turn: if last direction isn't left or steer is positive, reset to 0.
+                            if self.last_steer_direction != "left" or self.control.steer > 0:
+                                self.control.steer = 0.0
+                                self.last_steer_direction = "left"
+                                print("Right arrow pressed (inverted to left): steering reset to 0")
+                            else:
+                                self.control.steer -= 0.1
+                                self.control.steer = max(self.control.steer, -1.0)
+                                print("Right arrow pressed (inverted to left): steer =", self.control.steer)
+                        elif key == b'K':  # Left arrow (inverted: behaves as right)
+                            # For right turn: if last direction isn't right or steer is negative, reset to 0.
+                            if self.last_steer_direction != "right" or self.control.steer < 0:
+                                self.control.steer = 0.0
+                                self.last_steer_direction = "right"
+                                print("Left arrow pressed (inverted to right): steering reset to 0")
+                            else:
+                                self.control.steer += 0.1
+                                self.control.steer = min(self.control.steer, 1.0)
+                                print("Left arrow pressed (inverted to right): steer =", self.control.steer)
                     else:
                         # Use keys 'z' and 'x' for gear up and gear down
                         if key.lower() == b'z':
@@ -117,12 +139,24 @@ class Driver(object):
                                 self.control.brake = min(self.control.brake + 0.1, 1.0)
                                 self.control.accel = 0.0
                                 print("Brake:", self.control.brake)
-                            elif seq == '[D':  # Left arrow: inverted to steer right
-                                self.control.steer = min(self.control.steer + 0.1, 1.0)
-                                print("Left arrow pressed (inverted to steer right):", self.control.steer)
-                            elif seq == '[C':  # Right arrow: inverted to steer left
-                                self.control.steer = max(self.control.steer - 0.1, -1.0)
-                                print("Right arrow pressed (inverted to steer left):", self.control.steer)
+                            elif seq == '[C':  # Right arrow (inverted: behaves as left)
+                                if self.last_steer_direction != "left" or self.control.steer > 0:
+                                    self.control.steer = 0.0
+                                    self.last_steer_direction = "left"
+                                    print("Right arrow pressed (inverted to left): steering reset to 0")
+                                else:
+                                    self.control.steer -= 0.1
+                                    self.control.steer = max(self.control.steer, -1.0)
+                                    print("Right arrow pressed (inverted to left): steer =", self.control.steer)
+                            elif seq == '[D':  # Left arrow (inverted: behaves as right)
+                                if self.last_steer_direction != "right" or self.control.steer < 0:
+                                    self.control.steer = 0.0
+                                    self.last_steer_direction = "right"
+                                    print("Left arrow pressed (inverted to right): steering reset to 0")
+                                else:
+                                    self.control.steer += 0.1
+                                    self.control.steer = min(self.control.steer, 1.0)
+                                    print("Left arrow pressed (inverted to right): steer =", self.control.steer)
                         elif key.lower() == 'z':
                             self.control.gear += 1
                             print("Gear up:", self.control.gear)
