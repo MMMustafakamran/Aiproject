@@ -2,13 +2,15 @@
 import sys
 import argparse
 import socket
+import csv
+import time
 import driver  # Assuming driver.py is available
 
 if __name__ == '__main__':
     pass
 
 # Configure argument parser
-parser = argparse.ArgumentParser(description='Python client to connect to the TORCS SCRC server in manual mode.')
+parser = argparse.ArgumentParser(description='Python client to connect to the TORCS SCRC server in manual mode and log telemetry data to a CSV file.')
 parser.add_argument('--host', action='store', dest='host_ip', default='localhost',
                     help='Host IP address (default: localhost)')
 parser.add_argument('--port', action='store', type=int, dest='host_port', default=3001,
@@ -43,6 +45,18 @@ except socket.error as msg:
 
 # One second timeout
 sock.settimeout(1.0)
+
+# Open CSV file for telemetry logging
+csv_filename = "telemetry_log.csv"
+csv_file = open(csv_filename, "w", newline="")
+csv_writer = csv.writer(csv_file)
+
+# Write CSV header with chosen sensor fields.
+header = ["timestamp", "angle", "curLapTime", "damage", "distFromStart",
+          "distRaced", "fuel", "gear", "lastLapTime", "racePos", "rpm",
+          "speedX", "speedY", "speedZ", "trackPos", "z"]
+csv_writer.writerow(header)
+csv_file.flush()
 
 shutdownClient = False
 curEpisode = 0
@@ -84,6 +98,7 @@ while not shutdownClient:
             buf = buf.decode()
         except socket.error as msg:
             print("Didn't get response from server...")
+            continue
         
         if verbose:
             print('Received:', buf)
@@ -98,6 +113,31 @@ while not shutdownClient:
             d.onRestart()
             print('Client Restart')
             break
+
+        # Log telemetry data: parse the received message using the driver's parser.
+        telemetry = d.state.parser.parse(buf)
+        if telemetry:
+            # Extract fields with defaults in case a field is missing.
+            row = [
+                time.time(),
+                telemetry.get("angle", [""])[0],
+                telemetry.get("curLapTime", [""])[0],
+                telemetry.get("damage", [""])[0],
+                telemetry.get("distFromStart", [""])[0],
+                telemetry.get("distRaced", [""])[0],
+                telemetry.get("fuel", [""])[0],
+                telemetry.get("gear", [""])[0],
+                telemetry.get("lastLapTime", [""])[0],
+                telemetry.get("racePos", [""])[0],
+                telemetry.get("rpm", [""])[0],
+                telemetry.get("speedX", [""])[0],
+                telemetry.get("speedY", [""])[0],
+                telemetry.get("speedZ", [""])[0],
+                telemetry.get("trackPos", [""])[0],
+                telemetry.get("z", [""])[0]
+            ]
+            csv_writer.writerow(row)
+            csv_file.flush()
         
         currentStep += 1
         if currentStep != arguments.max_steps:
@@ -122,3 +162,5 @@ while not shutdownClient:
         shutdownClient = True
 
 sock.close()
+csv_file.close()
+print("Telemetry logged to", csv_filename)
