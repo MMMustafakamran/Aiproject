@@ -4,6 +4,7 @@ import argparse
 import socket
 import csv
 import time
+import os
 import driver  # Assuming driver.py is available
 
 if __name__ == '__main__':
@@ -46,17 +47,19 @@ except socket.error as msg:
 # One second timeout
 sock.settimeout(1.0)
 
-# Open CSV file for telemetry logging
+# Open CSV file in append mode for telemetry logging
 csv_filename = "telemetry_log.csv"
-csv_file = open(csv_filename, "w", newline="")
+file_exists = os.path.isfile(csv_filename) and os.path.getsize(csv_filename) > 0
+csv_file = open(csv_filename, "a", newline="")
 csv_writer = csv.writer(csv_file)
 
-# Write CSV header with chosen sensor fields.
-header = ["timestamp", "angle", "curLapTime", "damage", "distFromStart",
-          "distRaced", "fuel", "gear", "lastLapTime", "racePos", "rpm",
-          "speedX", "speedY", "speedZ", "trackPos", "z"]
-csv_writer.writerow(header)
-csv_file.flush()
+# If the file is new or empty, write the header
+if not file_exists:
+    header = ["timestamp", "angle", "curLapTime", "damage", "distFromStart",
+              "distRaced", "fuel", "gear", "lastLapTime", "racePos", "rpm",
+              "speedX", "speedY", "speedZ", "trackPos", "z"]
+    csv_writer.writerow(header)
+    csv_file.flush()
 
 shutdownClient = False
 curEpisode = 0
