@@ -1,8 +1,16 @@
-'''
-Created on Apr 5, 2012
+"""
+carState.py
 
-@author: lanquarden
-'''
+Manages car state in a racing simulation.
+
+- Parses sensor data using `msgParser`.
+- Tracks variables like speed, position, fuel, damage, etc.
+- Provides getter and setter methods.
+- Converts state to/from message format.
+
+Dependencies:
+- msgParser: Parses and formats sensor data.
+"""
 import msgParser
 
 class CarState(object):

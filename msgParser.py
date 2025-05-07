@@ -1,8 +1,10 @@
-'''
-Created on Apr 5, 2012
 
-@author: lanquarden
-'''
+"""
+FILE: msgParser.py
+This file contains the implementation of the `MsgParser` class, which is responsible for:
+- Parsing received UDP messages into a dictionary format.
+- Building UDP messages from a dictionary.
+"""
 
 class MsgParser(object):
     '''

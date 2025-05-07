@@ -1,4 +1,16 @@
-#!/usr/bin/env python3
+"""
+This script serves as a Python client to connect to the TORCS SCRC server in manual mode 
+and log telemetry data to a CSV file.
+Functionality:
+- Connects to the TORCS SCRC server using UDP sockets.
+- Sends initialization and control commands to the server.
+- Receives telemetry data from the server and logs it to a CSV file.
+- Supports configurable parameters such as host IP, port, bot ID, maximum episodes, steps, track, and stage.
+- Handles server responses for shutdown and restart commands.
+- Uses a driver module for manual control and telemetry parsing.
+Usage:
+- Run the script with appropriate command-line arguments to configure the connection and logging behavior.
+"""
 import sys
 import argparse
 import socket

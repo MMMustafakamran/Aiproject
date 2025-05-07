@@ -1,8 +1,4 @@
-'''
-Created on Apr 4, 2012
 
-Modified for manual driving mode only.
-'''
 
 import msgParser
 import carState
