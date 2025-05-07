@@ -26,28 +26,42 @@ import carControl
 import threading
 import time
 import sys
+import joblib
+import numpy as np
 
 class Driver(object):
     '''
-    A driver object for the SCRC that operates in manual mode only.
+    A driver object for the SCRC that can operate in both manual and AI modes.
     '''
 
-    def __init__(self, stage):
+    def __init__(self, stage, ai_mode=False):
         '''Constructor'''
         self.WARM_UP = 0
         self.QUALIFYING = 1
         self.RACE = 2
         self.UNKNOWN = 3
         self.stage = stage
+        self.ai_mode = ai_mode
         
         self.parser = msgParser.MsgParser()
         self.state = carState.CarState()
         self.control = carControl.CarControl()
         
-        # Remove automatic control parameters
-        # Start the manual input thread immediately
-        self.manual_thread = threading.Thread(target=self._manual_input_loop, daemon=True)
-        self.manual_thread.start()
+        # Load AI model if in AI mode
+        if self.ai_mode:
+            try:
+                self.model = joblib.load('model.pkl')
+                self.scaler = joblib.load('scaler.pkl')
+                self.feature_names = joblib.load('feature_names.pkl')
+                print("AI model loaded successfully")
+                print("Feature names:", self.feature_names)
+            except Exception as e:
+                print(f"Error loading AI model: {e}")
+                self.ai_mode = False
+        else:
+            # Start the manual input thread for manual mode
+            self.manual_thread = threading.Thread(target=self._manual_input_loop, daemon=True)
+            self.manual_thread.start()
 
     def init(self):
         '''Return init string with rangefinder angles'''
@@ -65,9 +79,41 @@ class Driver(object):
     
     def drive(self, msg):
         '''Process telemetry and return control commands.
-           In manual mode only, control values are updated by the manual input thread.'''
+           In AI mode, uses the model to predict actions.
+           In manual mode, control values are updated by the manual input thread.'''
         self.state.setFromMsg(msg)
-        # No automatic adjustments are performed.
+        
+        if self.ai_mode:
+            # Prepare features for prediction using the same order as training
+            features = []
+            for feature_name in self.feature_names:
+                feature_value = getattr(self.state, feature_name)
+                if feature_value is None:
+                    feature_value = 0.0  # Default value if feature is missing
+                features.append(feature_value)
+            
+            # Scale features
+            features_scaled = self.scaler.transform([features])
+            
+            # Get predictions
+            predictions = self.model.predict(features_scaled)[0]
+            
+            # Apply predictions to control
+            if predictions[0]:  # steer_left
+                self.control.steer = min(self.control.steer + 0.1, 1.0)
+            if predictions[1]:  # steer_right
+                self.control.steer = max(self.control.steer - 0.1, -1.0)
+            if predictions[2]:  # accelerate
+                self.control.accel = min(self.control.accel + 0.1, 1.0)
+                self.control.brake = 0.0
+            if predictions[3]:  # brake
+                self.control.brake = min(self.control.brake + 0.1, 1.0)
+                self.control.accel = 0.0
+            if predictions[4]:  # gear_up
+                self.control.gear = min(self.control.gear + 1, 6)
+            if predictions[5]:  # gear_down
+                self.control.gear = max(self.control.gear - 1, 1)
+        
         return self.control.toMsg()
     
     def onShutDown(self):

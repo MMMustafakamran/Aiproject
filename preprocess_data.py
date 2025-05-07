@@ -15,6 +15,7 @@ Output files:
 - X_train.npy, X_test.npy: Scaled features
 - y_train.npy, y_test.npy: Action labels
 - scaler.pkl: Feature scaler for preprocessing
+- feature_names.pkl: Feature names for prediction
 
 Usage:
     python preprocess_data.py
@@ -52,14 +53,15 @@ def preprocess_telemetry_data(file_path):
     actions['gear_up'] = ((df['rpm'] > 6500) & (df['gear'] < 6)).astype(int)
     actions['gear_down'] = ((df['rpm'] < 3000) & (df['gear'] > 1)).astype(int)
     
-    # Select features for training
-    features = [
+    # Define features in the same order as they will be used in prediction
+    feature_names = [
         'angle', 'curLapTime', 'damage', 'distFromStart', 'distRaced',
         'fuel', 'gear', 'lastLapTime', 'racePos', 'rpm',
         'speedX', 'speedY', 'speedZ', 'trackPos', 'z'
     ]
     
-    X = df[features]
+    # Select features for training
+    X = df[feature_names]
     y = actions
     
     # Split the data
@@ -72,19 +74,25 @@ def preprocess_telemetry_data(file_path):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     
+    # Convert back to DataFrame to preserve feature names
+    X_train_scaled = pd.DataFrame(X_train_scaled, columns=feature_names)
+    X_test_scaled = pd.DataFrame(X_test_scaled, columns=feature_names)
+    
     # Save the processed data
-    np.save('X_train.npy', X_train_scaled)
-    np.save('X_test.npy', X_test_scaled)
+    np.save('X_train.npy', X_train_scaled.values)
+    np.save('X_test.npy', X_test_scaled.values)
     np.save('y_train.npy', y_train.values)
     np.save('y_test.npy', y_test.values)
     
-    # Save the scaler for later use
+    # Save the scaler and feature names
     import joblib
     joblib.dump(scaler, 'scaler.pkl')
+    joblib.dump(feature_names, 'feature_names.pkl')
     
     print("\nData preprocessing complete!")
     print(f"Training set shape: {X_train_scaled.shape}")
     print(f"Test set shape: {X_test_scaled.shape}")
+    print("\nFeature names:", feature_names)
     print("\nAction distribution in training set:")
     print(y_train.sum())
     

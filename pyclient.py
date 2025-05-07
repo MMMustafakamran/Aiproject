@@ -19,6 +19,32 @@ import time
 import os
 import driver  # Assuming driver.py is available
 
+def safe_float(value, default=0.0):
+    """Safely convert a value to float, returning default if conversion fails"""
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return default
+
+def print_telemetry(telemetry):
+    """Print formatted telemetry data on a single line"""
+    print("\n--------------------------------Recieved--------------------------------\n")
+    angle = safe_float(telemetry.get('angle', ['0'])[0])
+    track = safe_float(telemetry.get('trackPos', ['0'])[0])
+    speed = safe_float(telemetry.get('speedX', ['0'])[0])
+    rpm = safe_float(telemetry.get('rpm', ['0'])[0])
+    gear = telemetry.get('gear', ['0'])[0]
+    damage = safe_float(telemetry.get('damage', ['0'])[0])
+    fuel = safe_float(telemetry.get('fuel', ['0'])[0])
+    pos = telemetry.get('racePos', ['0'])[0]
+    
+    print(f"TELEMETRY | Angle: {angle:.2f} | Track: {track:.2f} | Speed: {speed:.2f} | RPM: {rpm:.0f} | Gear: {gear} | Damage: {damage:.0f} | Fuel: {fuel:.0f} | Pos: {pos}", end='')
+
+def print_control(control):
+    """Print formatted control actions on a single line"""
+    print("\n--------------------------------Prediction--------------------------------\n")
+    print(f" | CONTROL | Steer: {control.steer:.2f} | Accel: {control.accel:.2f} | Brake: {control.brake:.2f} | Gear: {control.gear}")
+
 if __name__ == '__main__':
     pass
 
@@ -38,6 +64,8 @@ parser.add_argument('--track', action='store', dest='track', default=None,
                     help='Name of the track')
 parser.add_argument('--stage', action='store', dest='stage', type=int, default=3,
                     help='Stage (0 - Warm-Up, 1 - Qualifying, 2 - Race, 3 - Unknown)')
+parser.add_argument('--ai', action='store_true', dest='ai_mode',
+                    help='Enable AI mode (default: False)')
 
 arguments = parser.parse_args()
 
@@ -78,8 +106,8 @@ curEpisode = 0
 
 verbose = False
 
-# Instantiate Driver for manual control only
-d = driver.Driver(arguments.stage)
+# Instantiate Driver with AI mode if specified
+d = driver.Driver(arguments.stage, ai_mode=arguments.ai_mode)
 
 while not shutdownClient:
     while True:
@@ -132,6 +160,9 @@ while not shutdownClient:
         # Log telemetry data: parse the received message using the driver's parser.
         telemetry = d.state.parser.parse(buf)
         if telemetry:
+            # Print received telemetry data
+            print_telemetry(telemetry)
+            
             # Extract fields with defaults in case a field is missing.
             row = [
                 time.time(),
@@ -158,6 +189,8 @@ while not shutdownClient:
         if currentStep != arguments.max_steps:
             if buf:
                 buf = d.drive(buf)
+                # Print control actions after prediction
+                print_control(d.control)
         else:
             buf = '(meta 1)'
         
