@@ -1,3 +1,27 @@
+"""
+Threshold Verification Script for TORCS AI Racing Controller
+
+This script verifies and analyzes the action thresholds used in preprocessing.
+It provides:
+- Visual analysis of threshold effectiveness
+- Statistical validation of action triggers
+- Distribution analysis for:
+  * Steering angles
+  * Track positions
+  * RPM ranges
+  * Speed thresholds
+
+Output:
+- threshold_analysis.png: Visual representation of thresholds
+- Statistical analysis of threshold effectiveness
+
+Usage:
+    python verify_thresholds.py
+
+Author: [Your Name]
+Date: [Current Date]
+"""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

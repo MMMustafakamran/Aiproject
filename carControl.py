@@ -1,8 +1,8 @@
-'''
-Created on Apr 5, 2012
+# CarControl class:
+# - Holds control parameters of a car (accel, brake, gear, steer, clutch, focus, meta).
+# - Provides set/get methods for each parameter.
+# - Converts parameters to message format using msgParser.
 
-@author: lanquarden
-'''
 import msgParser
 
 class CarControl(object):

@@ -1,3 +1,25 @@
+"""
+Data Analysis Script for TORCS AI Racing Controller
+
+This script analyzes the collected telemetry data from TORCS racing simulator.
+It provides comprehensive analysis of:
+- Basic data statistics and distributions
+- Speed and track position analysis
+- Gear usage patterns
+- RPM distributions
+- Feature correlations
+
+The script generates visualizations saved as PNG files:
+- telemetry_analysis.png: Basic distributions
+- correlation_analysis.png: Feature correlations
+
+Usage:
+    python analyze_data.py
+
+Author: [Your Name]
+Date: [Current Date]
+"""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

@@ -1,4 +1,24 @@
+"""
+TORCS AI Racing Controller - Driver Implementation
 
+This is the main driver implementation for the TORCS racing simulator.
+It provides:
+- Manual control interface
+- Telemetry data collection
+- Action prediction (when AI model is loaded)
+- Safety checks and gear management
+
+Key features:
+- Real-time control input processing
+- Collision detection
+- Gear management
+- Speed control
+- Track position monitoring
+
+Usage:
+    Run through pyclient.py with appropriate arguments
+
+"""
 
 import msgParser
 import carState

@@ -1,3 +1,26 @@
+"""
+Data Preprocessing Script for TORCS AI Racing Controller
+
+This script preprocesses the telemetry data for model training.
+Key functionalities:
+- Converts raw telemetry data into training features
+- Creates binary action labels for:
+  * Steering (left/right)
+  * Gear changes (up/down)
+  * Acceleration/braking
+- Implements feature scaling
+- Splits data into training and test sets
+
+Output files:
+- X_train.npy, X_test.npy: Scaled features
+- y_train.npy, y_test.npy: Action labels
+- scaler.pkl: Feature scaler for preprocessing
+
+Usage:
+    python preprocess_data.py
+
+"""
+
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
