@@ -1,8 +1,12 @@
-# CarControl class:
-# - Holds control parameters of a car (accel, brake, gear, steer, clutch, focus, meta).
-# - Provides set/get methods for each parameter.
-# - Converts parameters to message format using msgParser.
-
+'''
+carControl.py
+Manages control parameters for a simulated car in a racing environment (e.g., TORCS/SCRC)
+- Stores and updates car control variables like acceleration, brake, gear, and steering
+- Provides getter and setter methods for each control parameter
+- Converts control parameters to a formatted message string for simulator communication
+- Uses msgParser to stringify control actions
+- No input validation; intended for use with a rule-based or AI driver
+'''
 import msgParser
 
 class CarControl(object):

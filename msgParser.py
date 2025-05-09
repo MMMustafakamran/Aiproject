@@ -1,10 +1,9 @@
-
-"""
-FILE: msgParser.py
-This file contains the implementation of the `MsgParser` class, which is responsible for:
-- Parsing received UDP messages into a dictionary format.
-- Building UDP messages from a dictionary.
-"""
+'''
+msgParser.py
+Parses and formats UDP messages for communication with a racing simulator (e.g., TORCS/SCRC)
+- Parses incoming sensor data strings into a dictionary of key-value pairs
+- Used by carState and carControl for sensor and control message processing
+'''
 
 class MsgParser(object):
     '''
