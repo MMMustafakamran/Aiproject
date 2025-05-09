@@ -22,6 +22,7 @@ import time  # Added for delay
 import csv  # Added for CSV logging
 import os  # Added for file path handling
 
+#example: python pyclient.py --manual, python pyclient.py --ruleai, python pyclient.py --learning
 if __name__ == '__main__':
     pass
 
@@ -111,7 +112,12 @@ while not shutdownClient:
     
     # Initialize CSV file for car state and control data
     os.makedirs('results', exist_ok=True)  # Create results directory if it doesn't exist
-    csv_filename = os.path.join('results', f'car_data_{time.strftime("%Y%m%d_%H%M%S")}.csv')
+    
+    # Create mode-specific directory
+    mode_dir = os.path.join('results', arguments.mode)
+    os.makedirs(mode_dir, exist_ok=True)
+    
+    csv_filename = os.path.join(mode_dir, f'car_data_{time.strftime("%Y%m%d_%H%M%S")}.csv')
     csv_headers = [
         'Step', 'Time',
         # Car State Fields
@@ -188,10 +194,11 @@ while not shutdownClient:
                     
                     # Print important input and output fields every 10 steps
                     if currentStep % 10 == 0 or verbose:
-                        print(f"Step {currentStep}:")
-                        print(f"Input:  SpeedX: {d.state.getSpeedX():.2f} m/s | TrackPos: {d.state.getTrackPos():.2f} | Angle: {d.state.getAngle():.2f} rad | RPM: {d.state.getRpm():.0f} | Gear: {d.state.getGear()}")
-                        print(f"Output: Accel: {d.control.getAccel():.2f} | Brake: {d.control.getBrake():.2f} | Steer: {d.control.getSteer():.2f} | Gear: {d.control.getGear()}")
-                        print("---")
+                        #print(f"Step {currentStep}:")
+                        #print(f"Input:  SpeedX: {d.state.getSpeedX():.2f} m/s | TrackPos: {d.state.getTrackPos():.2f} | Angle: {d.state.getAngle():.2f} rad | RPM: {d.state.getRpm():.0f} | Gear: {d.state.getGear()}")
+                        #print(f"Output: Accel: {d.control.getAccel():.2f} | Brake: {d.control.getBrake():.2f} | Steer: {d.control.getSteer():.2f} | Gear: {d.control.getGear()}")
+                        #print("---")
+                        pass
             else:
                 buf = '(meta 1)'
             

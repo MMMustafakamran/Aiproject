@@ -1,0 +1,4 @@
+made a new pyclient that extracts fields and saves it in results folder 
+- the client can be run with different modes = ai(default) , manual , rulesbasedai
+- removed the previously trained model  
+-auto gear change  in manual 
