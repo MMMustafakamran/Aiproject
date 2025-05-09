@@ -11,7 +11,7 @@ Main client program for connecting a Python driver to the TORCS/SCRC racing simu
 - Logs input (speedX, trackPos, angle, rpm, gear) and output (accel, brake, steer, gear) fields to a CSV file
 - Logs car state and control data to CSV files for training purposes
 '''
-
+# example python pyclient --mode manual , python pyclient --mode ruleai , python pyclient --mode learning
 import sys
 import argparse
 import socket
@@ -22,7 +22,7 @@ import time  # Added for delay
 import csv  # Added for CSV logging
 import os  # Added for file path handling
 
-#example: python pyclient.py --manual, python pyclient.py --ruleai, python pyclient.py --learning
+
 if __name__ == '__main__':
     pass
 
@@ -117,7 +117,7 @@ while not shutdownClient:
     mode_dir = os.path.join('results', arguments.mode)
     os.makedirs(mode_dir, exist_ok=True)
     
-    csv_filename = os.path.join(mode_dir, f'car_data_{time.strftime("%Y%m%d_%H%M%S")}.csv')
+    csv_filename = os.path.join(mode_dir, f'car_data_{time.strftime("%d_%H%M%S")}.csv')
     csv_headers = [
         'Step', 'Time',
         # Car State Fields
