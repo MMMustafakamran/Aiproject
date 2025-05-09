@@ -1,0 +1,2513 @@
+2025-05-10 01:43:20,907 - LearningDriver - INFO - Loaded steer model from trained_models\Model-01\steer_model.joblib
+2025-05-10 01:43:20,967 - LearningDriver - INFO - Loaded accel model from trained_models\Model-01\accel_model.joblib
+2025-05-10 01:43:21,025 - LearningDriver - INFO - Loaded brake model from trained_models\Model-01\brake_model.joblib
+2025-05-10 01:43:21,028 - LearningDriver - INFO - Loaded scaler from trained_models\Model-01\scaler.joblib
+2025-05-10 01:43:21,029 - LearningDriver - WARNING - Feature configuration not found at trained_models\Model-01\feature_config.json
+2025-05-10 01:43:21,037 - LearningDriver - INFO - LearningDriver initialized successfully
+2025-05-10 01:43:40,655 - LearningDriver - INFO - Not enough history for prediction, using basic control
+2025-05-10 01:43:40,673 - LearningDriver - INFO - Not enough history for prediction, using basic control
+2025-05-10 01:43:40,694 - LearningDriver - INFO - Not enough history for prediction, using basic control
+2025-05-10 01:43:40,715 - LearningDriver - INFO - Not enough history for prediction, using basic control
+2025-05-10 01:43:40,734 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:40,831 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:40,937 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,062 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,159 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,261 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,398 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,496 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,608 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,732 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,845 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:41,955 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,071 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,200 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,296 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,398 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,509 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,618 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,748 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,863 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:42,968 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,083 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,191 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,286 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,383 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,470 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,560 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,654 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,760 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,861 - LearningDriver - INFO - Auto upshift to gear 2
+2025-05-10 01:43:43,864 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:43,946 - LearningDriver - INFO - Auto upshift to gear 3
+2025-05-10 01:43:43,950 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,046 - LearningDriver - INFO - Auto upshift to gear 4
+2025-05-10 01:43:44,049 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,218 - LearningDriver - INFO - Auto upshift to gear 5
+2025-05-10 01:43:44,239 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,456 - LearningDriver - INFO - Auto upshift to gear 6
+2025-05-10 01:43:44,461 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,581 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,697 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,810 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:44,919 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,027 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,146 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,268 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,381 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,490 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,588 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,676 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,780 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,878 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:45,976 - LearningDriver - INFO - Auto downshift to gear 5
+2025-05-10 01:43:45,978 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,071 - LearningDriver - INFO - Auto downshift to gear 4
+2025-05-10 01:43:46,076 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,184 - LearningDriver - INFO - Auto downshift to gear 3
+2025-05-10 01:43:46,190 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,286 - LearningDriver - INFO - Auto downshift to gear 2
+2025-05-10 01:43:46,289 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,396 - LearningDriver - INFO - Auto downshift to gear 1
+2025-05-10 01:43:46,400 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,495 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,588 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,688 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,787 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,896 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:46,995 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,101 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,206 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,302 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,410 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,513 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,609 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,698 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,807 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:47,903 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,003 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,101 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,210 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,305 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,400 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,504 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,604 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,707 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,806 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,899 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:48,992 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,108 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,212 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,304 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,406 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,505 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,592 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,695 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,800 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:49,912 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,002 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,106 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,215 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,327 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,455 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,559 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,660 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,798 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:50,920 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,040 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,149 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,244 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,343 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,436 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,529 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,619 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,709 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:51,825 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,070 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,198 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,300 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,390 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,476 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,563 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,649 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,751 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,839 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:52,925 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,021 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,129 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,245 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,347 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,451 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,558 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,654 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,754 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,853 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:53,940 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,042 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,143 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,246 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,405 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,646 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:54,956 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,124 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,240 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,357 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,482 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,590 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,695 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,817 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:55,933 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,056 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,177 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,294 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,417 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,527 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,640 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,760 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,869 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:56,985 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,102 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,212 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,304 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,414 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,521 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,626 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,737 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,854 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:57,969 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,090 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,202 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,315 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,423 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,527 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,640 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,752 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,865 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:58,974 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,103 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,227 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,336 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,444 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,550 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,650 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,754 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,855 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:43:59,937 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,064 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,205 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,320 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,437 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,537 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,624 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,716 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,828 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:00,921 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,015 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,110 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,226 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,355 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,513 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,660 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,799 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:01,926 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,102 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,277 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,410 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,581 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,695 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,814 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:02,938 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,053 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,166 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,311 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,435 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,532 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,613 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,708 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:03,866 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,071 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,215 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,301 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,391 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,501 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,630 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,735 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,840 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:04,940 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,043 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,139 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,237 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,340 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,433 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,530 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,633 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,725 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,825 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:05,915 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,012 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,111 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,206 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,309 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,413 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,510 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,628 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,762 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,870 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:06,990 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,100 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,201 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,314 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,412 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,517 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,634 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,729 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,825 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:07,913 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,011 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,105 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,199 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,281 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,373 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,482 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,594 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,706 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,794 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,886 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:08,987 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,117 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,241 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,371 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,498 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,618 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,728 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,834 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:09,976 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:10,103 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:10,260 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:10,398 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:10,578 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:10,887 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:11,130 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:11,366 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:11,564 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:11,811 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:11,975 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:12,203 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:12,473 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+
+2025-05-10 01:44:12,694 - LearningDriver - ERROR - Error scaling features: The feature names should match those that were passed during fit.
+Feature names seen at fit time, yet now missing:
+- Accel
+- Brake
+- Clutch
+- CurLapTime
+- Damage
+- ...
+

@@ -1,3 +1,23 @@
+"""
+LearningDriver - Machine Learning Based Autonomous Racing Driver
+
+This module implements an autonomous racing driver that uses machine learning models
+to control a car in the TORCS racing simulator. The driver loads pre-trained models
+for steering, acceleration, and braking decisions, and applies them in real-time
+to control the car.
+
+Key Features:
+- Real-time feature engineering from sensor data
+- Model-based control for steering, acceleration, and braking
+- Automatic gear shifting with RPM-based logic
+- Safety constraints and fallback behaviors
+- Comprehensive logging and error handling
+
+Usage:
+    Run with: python pyclient.py --mode learning
+    Requires trained models in trained_models/Model-01/ directory
+"""
+
 import os
 import numpy as np
 import pandas as pd
@@ -206,7 +226,7 @@ class LearningDriver:
             speed_angle_interaction = speed_magnitude * angle
             speed_position_interaction = speed_magnitude * track_pos
             
-            # Create feature dictionary
+            # Create feature dictionary with only input features (no target variables)
             features = {
                 'Speed_Magnitude': speed_magnitude,
                 'SpeedX': speedX,
@@ -231,6 +251,8 @@ class LearningDriver:
             # Scale features if scaler exists
             if self.scaler:
                 try:
+                    # Ensure columns match those used during training
+                    df = df[self.scaler.feature_names_in_]
                     df = pd.DataFrame(self.scaler.transform(df), columns=df.columns)
                 except Exception as e:
                     self.logger.error(f"Error scaling features: {str(e)}")

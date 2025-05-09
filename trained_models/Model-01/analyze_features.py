@@ -3,13 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
+import os
 
 def load_data():
     """Load the processed data"""
-    return pd.read_csv("processed_training_data.csv")
+    # Get the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    input_file = os.path.join(current_dir, "processed_training_data.csv")
+    return pd.read_csv(input_file)
 
 def analyze_feature_distributions(df):
     """Analyze and plot distributions of key features"""
+    # Get the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
     # Select important features for driving
     key_features = [
         'Speed_Magnitude', 'Dist_From_Center', 'Angle_Change',
@@ -29,7 +36,7 @@ def analyze_feature_distributions(df):
         axes[row, col].set_title(feature)
         
     plt.tight_layout()
-    plt.savefig('feature_distributions.png')
+    plt.savefig(os.path.join(current_dir, 'feature_distributions.png'))
     plt.close()
     
     # Print statistical summaries
@@ -47,6 +54,9 @@ def analyze_feature_distributions(df):
 
 def analyze_feature_correlations(df):
     """Analyze correlations between features and target variables"""
+    # Get the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
     # Target variables
     targets = ['Accel', 'Brake', 'Steer']
     
@@ -65,7 +75,7 @@ def analyze_feature_correlations(df):
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0)
     plt.title('Feature Correlations')
     plt.tight_layout()
-    plt.savefig('feature_correlations.png')
+    plt.savefig(os.path.join(current_dir, 'feature_correlations.png'))
     plt.close()
     
     # Print strongest correlations with target variables
@@ -77,6 +87,9 @@ def analyze_feature_correlations(df):
 
 def analyze_temporal_patterns(df):
     """Analyze patterns over time"""
+    # Get the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
     temporal_features = ['Speed_Magnitude', 'Net_Acceleration', 'Angle_Change']
     
     plt.figure(figsize=(15, 5))
@@ -88,7 +101,7 @@ def analyze_temporal_patterns(df):
     plt.ylabel('Scaled Value')
     plt.legend()
     plt.tight_layout()
-    plt.savefig('temporal_patterns.png')
+    plt.savefig(os.path.join(current_dir, 'temporal_patterns.png'))
     plt.close()
 
 def main():
