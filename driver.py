@@ -123,7 +123,7 @@ class Driver(object):
                     if key == b'\xe0':  # Arrow key prefix
                         key = msvcrt.getch()
                         current_speed = self.state.getSpeedX()
-                        self.is_stopped = abs(current_speed) < 0.1
+                        self.is_stopped = current_speed is not None and abs(current_speed) < 0.1
                         
                         if key == b'H':  # Up arrow
                             if self.control.gear == -1:  # In reverse
