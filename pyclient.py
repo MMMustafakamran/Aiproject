@@ -15,9 +15,9 @@ Main client program for connecting a Python driver to the TORCS/SCRC racing simu
 import sys
 import argparse
 import socket
-import driver  # Default learning-based AI driver
 import manual_driver  # Manual control driver
 import rule_driver  # Rule-based AI driver
+import learning_driver  # Learning-based AI driver
 import time  # Added for delay
 import csv  # Added for CSV logging
 import os  # Added for file path handling
@@ -77,8 +77,8 @@ if arguments.mode == 'manual':
     d = manual_driver.Driver(arguments.stage)
 elif arguments.mode == 'ruleai':
     d = rule_driver.Driver(arguments.stage)
-else:  # default to learning mode
-    d = driver.Driver(arguments.stage)
+else:  # learning mode
+    d = learning_driver.LearningDriver(arguments.stage)
 
 while not shutdownClient:
     retry_count = 0

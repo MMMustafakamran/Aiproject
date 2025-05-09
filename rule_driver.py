@@ -31,7 +31,11 @@ class Driver(object):
         self.CURVATURE_SENSITIVITY = 0.6  # Higher = more sensitive to turns
         self.MIN_TURN_THRESHOLD = 0.4     # Minimum turn sharpness to consider
         self.MAX_TURN_THRESHOLD = 0.7     # Maximum turn sharpness for full braking
-        self.BRAKE_THRESHOLD = 0.6        # How curved the path needs to be to apply brakes
+        
+        # Predictive curve detection parameters
+        self.LOOK_AHEAD_DISTANCE = 12      # How many sensors to look ahead
+        self.CURVE_DETECTION_THRESHOLD = 40  # Track width threshold for curve detection
+        self.SPEED_REDUCTION_FACTOR = 0.8   # How much to reduce speed for upcoming curves
 
     def init(self):
         '''Return init string with rangefinder angles'''
@@ -84,20 +88,31 @@ class Driver(object):
         accel = self.control.getAccel()
         steer = self.control.getSteer()
         track_pos = self.state.trackPos
+        damage = self.state.getDamage()
         track_sensors = self.state.getTrack()
 
         # Calculate how sharp the turn is based on steering, track position, and upcoming track
         turn_sharpness = (abs(steer) + abs(track_pos) * 0.3) * self.CURVATURE_SENSITIVITY
         
-        # Check upcoming track conditions (using front sensors)
-        if track_sensors and len(track_sensors) >= 5:
-            upcoming_track = min(track_sensors[0:5])  # Look at front sensors
-            if upcoming_track < 30:  # Only consider very narrow sections
-                turn_sharpness += (30 - upcoming_track) / 150.0  # Reduced impact
+        # Predictive curve detection
+        upcoming_curve_factor = 1.0
+        if track_sensors and len(track_sensors) >= self.LOOK_AHEAD_DISTANCE:
+            # Look at sensors ahead to detect upcoming curves
+            ahead_sensors = track_sensors[:self.LOOK_AHEAD_DISTANCE]
+            min_track_ahead = min(ahead_sensors)
+            
+            # If track is narrowing ahead, prepare for curve
+            if min_track_ahead < self.CURVE_DETECTION_THRESHOLD:
+                # Calculate how much to reduce speed based on how narrow the track is
+                curve_factor = min_track_ahead / self.CURVE_DETECTION_THRESHOLD
+                upcoming_curve_factor = max(curve_factor, self.SPEED_REDUCTION_FACTOR)
+                
+                # Add to turn sharpness to start slowing down earlier
+                turn_sharpness += (1 - curve_factor) * 0.3
 
         # Base acceleration adjustment
         if speed < self.max_speed:
-            target_accel = 1.0
+            target_accel = 1.0 * upcoming_curve_factor  # Reduce target speed for upcoming curves
         else:
             target_accel = 0.0
 
@@ -119,16 +134,8 @@ class Driver(object):
         # Ensure acceleration stays within bounds
         accel = max(0.0, min(1.0, accel))
 
-        # Add braking logic - only for very curved paths
-        brake = 0.0
-        if turn_sharpness > self.BRAKE_THRESHOLD and speed > 80:
-            # Calculate brake intensity based on how much we exceed the threshold
-            brake_intensity = (turn_sharpness - self.BRAKE_THRESHOLD) / (1.0 - self.BRAKE_THRESHOLD)
-            brake = min(brake_intensity * 0.8, 0.8)  # Cap at 80% brake
-
         # Apply controls
         self.control.setAccel(accel)
-        self.control.setBrake(brake)
 
     def onShutDown(self):
         pass
