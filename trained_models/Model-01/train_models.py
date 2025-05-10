@@ -1,135 +1,156 @@
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
-import joblib
+#!/usr/bin/env python3
+"""
+data_preprocessing.py
+
+1) Load racing log CSVs
+2) Basic cleaning (dedupe, drop NaNs, filter outliers)
+3) Extract features/targets
+4) Split into train/test and scale features
+5) Train continuous and discrete control models
+6) Evaluate on test set
+7) Save scaler + trained models
+"""
+
+import glob
 import os
+import numpy as np
+import pandas as pd
 
-def load_and_prepare_data():
-    """Load the processed data and prepare features/targets"""
-    # Load processed data
-    df = pd.read_csv("processed_training_data.csv")
-    
-    # Define feature sets for each control
-    common_features = [
-        'Speed_Magnitude', 'SpeedX', 'SpeedY', 'SpeedZ',
-        'Dist_From_Center', 'Angle', 'Angle_Change',
-        'RPM', 'RPM_Change', 'TrackPos',
-        'Speed_Angle_Interaction', 'Speed_Position_Interaction',
-        'SpeedX_MA', 'SpeedY_MA', 'Angle_MA'
-    ]
-    
-    # Target variables
-    targets = ['Steer', 'Accel', 'Brake']
-    
-    return df, common_features, targets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.multioutput import MultiOutputRegressor
+import joblib
 
-def train_and_evaluate_model(X, y, model_name):
-    """Train and evaluate a model for a specific control"""
-    # Split data
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-    
-    # Initialize model with optimized hyperparameters
-    if model_name == 'Steer':
-        model = RandomForestRegressor(
-            n_estimators=100,
-            max_depth=15,
-            min_samples_split=5,
-            random_state=42
-        )
-    elif model_name == 'Accel':
-        model = RandomForestRegressor(
-            n_estimators=100,
-            max_depth=10,
-            min_samples_split=5,
-            random_state=42
-        )
-    else:  # Brake
-        model = RandomForestRegressor(
-            n_estimators=100,
-            max_depth=10,
-            min_samples_split=10,
-            random_state=42
-        )
-    
-    # Train model
-    model.fit(X_train, y_train)
-    
-    # Make predictions
-    y_pred = model.predict(X_test)
-    
-    # Calculate metrics
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
-    
-    # Perform cross-validation
-    cv_scores = cross_val_score(model, X, y, cv=5, scoring='r2')
-    
-    # Print results
-    print(f"\n{model_name} Model Performance:")
-    print(f"Mean Squared Error: {mse:.4f}")
-    print(f"R² Score: {r2:.4f}")
-    print(f"Cross-validation R² scores: {cv_scores}")
-    print(f"Mean CV R² score: {cv_scores.mean():.4f} (+/- {cv_scores.std() * 2:.4f})")
-    
-    # Get feature importance
-    feature_importance = pd.DataFrame({
-        'feature': X.columns,
-        'importance': model.feature_importances_
-    }).sort_values('importance', ascending=False)
-    
-    print(f"\nTop 5 important features for {model_name}:")
-    print(feature_importance.head())
-    
-    return model, mse, r2, cv_scores.mean()
+# ----- CONFIG -----
+DATA_DIRS   = ["results/manual", "results/ruleai"]  # List of directories to load data from
+MODEL_DIR   = "trained_models/Model-01"
+TEST_SIZE   = 0.2
+RANDOM_SEED = 42
 
-def save_models(models, model_dir='trained_models'):
-    """Save trained models to disk"""
-    if not os.path.exists(model_dir):
-        os.makedirs(model_dir)
-    
-    for name, model in models.items():
-        filename = os.path.join(model_dir, f'{name.lower()}_model.joblib')
-        joblib.dump(model, filename)
-        print(f"Saved {name} model to {filename}")
+# 1) Define which columns to use
+FEATURE_COLS = [
+    "SpeedX", "SpeedY", "SpeedZ",
+    "TrackPos", "Angle", "RPM",
+    "CurLapTime", "DistFromStart", "DistRaced",
+    "Fuel", "Damage"
+    # if you logged track sensors, add them here:
+    # "TrackSensor0", ..., "TrackSensor18"
+]
+CONT_TARGETS = ["Accel", "Brake", "Steer", "Clutch"]
+DISC_TARGET  = "Gear_Control"
 
 def main():
-    # Load and prepare data
-    print("Loading and preparing data...")
-    df, features, targets = load_and_prepare_data()
+    os.makedirs(MODEL_DIR, exist_ok=True)
+
+    # 2) Load all CSVs from all directories
+    all_csv_files = []
+    for data_dir in DATA_DIRS:
+        csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
+        if csv_files:
+            print(f"Found {len(csv_files)} CSV files in {data_dir}")
+            all_csv_files.extend(csv_files)
     
-    # Dictionary to store models
-    models = {}
-    results = {}
+    if not all_csv_files:
+        raise FileNotFoundError(f"No CSV files found in {DATA_DIRS}")
     
-    # Train models for each control
-    for target in targets:
-        print(f"\nTraining {target} model...")
-        model, mse, r2, cv_r2 = train_and_evaluate_model(
-            df[features], df[target], target
+    print(f"\nLoading {len(all_csv_files)} total CSV files...")
+    df = pd.concat((pd.read_csv(f) for f in all_csv_files), ignore_index=True)
+    print(f"Initial dataset size: {len(df):,} rows")
+
+    # 3) Basic cleaning
+    print("\nCleaning data:")
+    print(f"  - Before cleaning: {len(df):,} rows")
+    
+    # a) drop exact duplicates
+    df.drop_duplicates(inplace=True)
+    print(f"  - After removing duplicates: {len(df):,} rows")
+
+    # b) drop rows with NaNs in any feature or target
+    required = FEATURE_COLS + CONT_TARGETS + [DISC_TARGET]
+    nan_before = df[required].isna().any(axis=1).sum()
+    df.dropna(subset=required, inplace=True)
+    print(f"  - Removed {nan_before:,} rows with missing values")
+    print(f"  - After removing NaNs: {len(df):,} rows")
+
+    # c) filter out obvious outliers
+    outliers = df[
+        ~((df["SpeedX"] >= 0) & (df["SpeedX"] <= 400) &   # reasonable speed range
+          (df["DistFromStart"] >= 0) &
+          (df["DistRaced"] >= 0))
+    ]
+    df = df[
+        (df["SpeedX"] >= 0) & (df["SpeedX"] <= 400) &   # reasonable speed range
+        (df["DistFromStart"] >= 0) &
+        (df["DistRaced"] >= 0)
+    ]
+    print(f"  - Removed {len(outliers):,} rows with invalid values")
+    print(f"  - Final cleaned dataset: {len(df):,} rows")
+
+    # 4) Extract features & targets
+    print("\nPreparing features and targets:")
+    X = df[FEATURE_COLS].values
+    y_cont = df[CONT_TARGETS].values
+    y_disc = df[DISC_TARGET].values.astype(int)
+    print(f"  - Features shape: {X.shape}")
+    print(f"  - Continuous targets shape: {y_cont.shape}")
+    print(f"  - Discrete target shape: {y_disc.shape}")
+
+    # 5) Train/test split
+    print(f"\nSplitting into train/test (test_size={TEST_SIZE})...")
+    X_train, X_test, \
+    y_cont_train, y_cont_test, \
+    y_disc_train, y_disc_test = train_test_split(
+        X, y_cont, y_disc,
+        test_size=TEST_SIZE,
+        random_state=RANDOM_SEED
+    )
+    print(f"  - Training set size: {len(X_train):,} samples")
+    print(f"  - Test set size: {len(X_test):,} samples")
+
+    # 6) Fit scaler on train features
+    print("\nFitting StandardScaler on training features...")
+    scaler = StandardScaler().fit(X_train)
+    X_train_s = scaler.transform(X_train)
+    X_test_s  = scaler.transform(X_test)
+
+    # 7) Train continuous-output model (MLP)
+    print("\nTraining MultiOutput MLPRegressor for continuous controls...")
+    mlp = MultiOutputRegressor(
+        MLPRegressor(
+            hidden_layer_sizes=(64, 64),
+            activation="relu",
+            solver="adam",
+            max_iter=200,
+            random_state=RANDOM_SEED
         )
-        
-        models[target] = model
-        results[target] = {
-            'mse': mse,
-            'r2': r2,
-            'cv_r2': cv_r2
-        }
-    
-    # Save models
-    print("\nSaving models...")
-    save_models(models)
-    
-    # Print overall summary
-    print("\nOverall Model Performance Summary:")
-    for target, metrics in results.items():
-        print(f"\n{target}:")
-        print(f"  MSE: {metrics['mse']:.4f}")
-        print(f"  R²: {metrics['r2']:.4f}")
-        print(f"  CV R²: {metrics['cv_r2']:.4f}")
+    )
+    mlp.fit(X_train_s, y_cont_train)
+
+    # 8) Train discrete-output model (Random Forest)
+    print("\nTraining RandomForestClassifier for gear control...")
+    rfc = RandomForestClassifier(
+        n_estimators=100,
+        random_state=RANDOM_SEED
+    )
+    rfc.fit(X_train_s, y_disc_train)
+
+    # 9) Evaluate
+    print("\nEvaluating models:")
+    cont_score = mlp.score(X_test_s, y_cont_test)
+    disc_acc   = rfc.score(X_test_s, y_disc_test)
+    print(f"  - Continuous control R² score on test: {cont_score:.3f}")
+    print(f"  - Gear-control accuracy on test:    {disc_acc:.3%}")
+
+    # 10) Save scaler + models
+    print("\nSaving models and scaler...")
+    joblib.dump(scaler, os.path.join(MODEL_DIR, "scaler.joblib"))
+    joblib.dump(mlp,    os.path.join(MODEL_DIR, "cont_model.joblib"))
+    joblib.dump(rfc,    os.path.join(MODEL_DIR, "gear_model.joblib"))
+    print("✓ Models saved successfully")
+
+    print("\nData preprocessing and model training complete.")
 
 if __name__ == "__main__":
-    main() 
+    main()

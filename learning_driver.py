@@ -1,364 +1,167 @@
+#!/usr/bin/env python3
+"""
+learning_driver.py
+
+A learning-based driver for SCRC that loads
+pre-trained models (cont_model, gear_model) and a scaler,
+then at each step predicts the controls using only
+features present in carState.py.
+"""
+
 import os
-import numpy as np
-import pandas as pd
 import joblib
+import numpy as np
+
 import msgParser
 import carState
 import carControl
-import threading
-import time
-import sys
-import logging
 
-class LearningDriver:
-    def __init__(self, stage):
-        """Initialize the learning driver"""
-        # Set up logging
-        self._setup_logging()
-        
-        self.WARM_UP = 0
+class LearningDriver(object):
+    """
+    A driver object for the SCRC that uses scikit-learn models
+    to predict Accel, Brake, Steer, Clutch (continuous) and Gear (discrete).
+    """
+    def __init__(self, stage,
+                 model_dir="trained_models/Model-01",
+                 feature_cols=None):
+        # stage constants
+        self.WARM_UP    = 0
         self.QUALIFYING = 1
-        self.RACE = 2
-        self.UNKNOWN = 3
-        self.stage = stage
-        
-        # Initialize parser and state objects
-        self.parser = msgParser.MsgParser()
-        self.state = carState.CarState()
+        self.RACE       = 2
+        self.UNKNOWN    = 3
+        self.stage      = stage
+
+        # parser / state / control
+        self.parser  = msgParser.MsgParser()
+        self.state   = carState.CarState()
         self.control = carControl.CarControl()
         
-        # Set model directory
-        self.model_dir = os.path.join('trained_models', 'Model-01')
-        if not os.path.exists(self.model_dir):
-            raise FileNotFoundError(f"Model directory not found: {self.model_dir}")
+        # ensure model_dir exists
+        if not os.path.isdir(model_dir):
+            raise FileNotFoundError(f"Model directory not found: {model_dir}")
         
-        # Load trained models
-        self.models = self._load_models()
+        # load scaler and models
+        try:
+            self.scaler     = joblib.load(os.path.join(model_dir, "scaler.joblib"))
+            self.cont_model = joblib.load(os.path.join(model_dir, "cont_model.joblib"))
+            self.gear_model = joblib.load(os.path.join(model_dir, "gear_model.joblib"))
+        except Exception as e:
+            raise RuntimeError(f"Error loading models: {e}")
+
+        # only features with getters in CarState
+        # MUST match exactly what you used during training!
+        self.feature_cols = feature_cols or [
+            "SpeedX",        # getSpeedX()
+            "SpeedY",        # getSpeedY()
+            "SpeedZ",        # getSpeedZ()
+            "Angle",         # getAngle()
+            "TrackPos",      # getTrackPos()
+            "Rpm",           # getRpm()
+            "CurLapTime",    # getCurLapTime()
+            "DistFromStart", # getDistFromStart()
+            "DistRaced",     # getDistRaced()
+            "Fuel",          # getFuel()
+            "Damage"         # getDamage()
+        ]
         
-        # Initialize feature history for moving averages
-        self.history = {
-            'SpeedX': [],
-            'SpeedY': [],
-            'Angle': []
-        }
-        self.window_size = 5
-        
-        # Feature scaler
-        self.scaler = None
-        scaler_path = os.path.join(self.model_dir, 'scaler.joblib')
-        if os.path.exists(scaler_path):
-            try:
-                self.scaler = joblib.load(scaler_path)
-                self.logger.info(f"Loaded scaler from {scaler_path}")
-            except Exception as e:
-                self.logger.error(f"Error loading scaler: {str(e)}")
-        else:
-            self.logger.warning(f"Scaler not found at {scaler_path}")
-            
-        # RPM thresholds for automatic gear shifting
-        self.upshift_rpm = {
-            1: 7000,
-            2: 7000,
-            3: 7000,
-            4: 7500,
-            5: 7500,
-            6: 7500
-        }
-        self.downshift_rpm = {
-            2: 2000,
-            3: 2500,
-            4: 3000,
-            5: 3500,
-            6: 4000
-        }
-        
-        # Initialize previous RPM for change calculation
-        self._prev_rpm = 0
-        
-        # Load feature configuration if available
-        self.feature_config = self._load_feature_config()
-        
-        self.logger.info("LearningDriver initialized successfully")
-    
-    def _setup_logging(self):
-        """Set up logging configuration"""
-        # Create logs directory if it doesn't exist
-        os.makedirs('logs', exist_ok=True)
-        
-        # Configure logging
-        self.logger = logging.getLogger('LearningDriver')
-        self.logger.setLevel(logging.INFO)
-        
-        # Create file handler
-        log_file = os.path.join('logs', f'learning_driver_{time.strftime("%Y%m%d_%H%M%S")}.log')
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.INFO)
-        
-        # Create console handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-        
-        # Create formatter
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
-        
-        # Add handlers to logger
-        self.logger.addHandler(file_handler)
-        self.logger.addHandler(console_handler)
-    
-    def _load_feature_config(self):
-        """Load feature configuration from Model-01 directory"""
-        config_path = os.path.join(self.model_dir, 'feature_config.json')
-        if os.path.exists(config_path):
-            try:
-                import json
-                with open(config_path, 'r') as f:
-                    config = json.load(f)
-                self.logger.info(f"Loaded feature configuration from {config_path}")
-                return config
-            except Exception as e:
-                self.logger.error(f"Error loading feature configuration: {str(e)}")
-        else:
-            self.logger.warning(f"Feature configuration not found at {config_path}")
-        return None
-    
-    def _load_models(self):
-        """Load the trained models from Model-01 directory"""
-        models = {}
-        model_files = {
-            'steer': 'steer_model.joblib',
-            'accel': 'accel_model.joblib',
-            'brake': 'brake_model.joblib'
-        }
-        
-        for control, model_file in model_files.items():
-            model_path = os.path.join(self.model_dir, model_file)
-            if os.path.exists(model_path):
-                try:
-                    models[control] = joblib.load(model_path)
-                    self.logger.info(f"Loaded {control} model from {model_path}")
-                except Exception as e:
-                    self.logger.error(f"Error loading {control} model: {str(e)}")
-                    raise
-            else:
-                error_msg = f"Model not found: {model_path}"
-                self.logger.error(error_msg)
-                raise FileNotFoundError(error_msg)
-        
-        return models
+        # validate that each feature exists
+        for col in self.feature_cols:
+            if not (hasattr(self.state, f"get{col}") or hasattr(self.state, col)):
+                raise ValueError(f"Required feature '{col}' not available in CarState")
+
+        # track previous gear/speed for safety
+        self._prev_gear  = 1
+        self._prev_speed = 0.0
     
     def init(self):
-        """Return init string with rangefinder angles"""
-        self.angles = [0 for x in range(19)]
-        
+        """Return the init string (rangefinder angles)."""
+        angles = [0.0]*19
         for i in range(5):
-            self.angles[i] = -90 + i * 15
-            self.angles[18 - i] = 90 - i * 15
-        
+            angles[i]      = -90 + i * 15
+            angles[18 - i] =  90 - i * 15
         for i in range(5, 9):
-            self.angles[i] = -20 + (i-5) * 5
-            self.angles[18 - i] = 20 - (i-5) * 5
-        
-        return self.parser.stringify({'init': self.angles})
-    
-    def _update_history(self, state):
-        """Update feature history for moving averages"""
-        for feature in self.history:
-            value = getattr(state, f'get{feature}')()
-            self.history[feature].append(value)
-            if len(self.history[feature]) > self.window_size:
-                self.history[feature].pop(0)
-    
-    def _get_moving_averages(self):
-        """Calculate moving averages from history"""
-        return {
-            'SpeedX_MA': np.mean(self.history['SpeedX']) if self.history['SpeedX'] else 0,
-            'SpeedY_MA': np.mean(self.history['SpeedY']) if self.history['SpeedY'] else 0,
-            'Angle_MA': np.mean(self.history['Angle']) if self.history['Angle'] else 0
-        }
-    
-    def _prepare_features(self, state):
-        """Prepare features for model prediction"""
+            angles[i]      = -20 + (i-5) * 5
+            angles[18 - i] =  20 - (i-5) * 5
+        return self.parser.stringify({"init": angles})
+
+    def _get(self, col):
+        """Helper: call getter or attribute, default 0.0 on error."""
         try:
-            # Get basic state features
-            speedX = state.getSpeedX()
-            speedY = state.getSpeedY()
-            speedZ = state.getSpeedZ()
-            
-            # Calculate speed magnitude
-            speed_magnitude = np.sqrt(speedX**2 + speedY**2 + speedZ**2)
-            
-            # Get other state features
-            angle = state.getAngle()
-            rpm = state.getRpm()
-            track_pos = state.getTrackPos()
-            
-            # Calculate changes (if history exists)
-            angle_change = angle - self.history['Angle'][-1] if self.history['Angle'] else 0
-            rpm_change = rpm - self._prev_rpm if hasattr(self, '_prev_rpm') else 0
-            self._prev_rpm = rpm
-            
-            # Get moving averages
-            ma_features = self._get_moving_averages()
-            
-            # Calculate interaction features
-            speed_angle_interaction = speed_magnitude * angle
-            speed_position_interaction = speed_magnitude * track_pos
-            
-            # Create feature dictionary
-            features = {
-                'Speed_Magnitude': speed_magnitude,
-                'SpeedX': speedX,
-                'SpeedY': speedY,
-                'SpeedZ': speedZ,
-                'Dist_From_Center': abs(track_pos),
-                'Angle': angle,
-                'Angle_Change': angle_change,
-                'RPM': rpm,
-                'RPM_Change': rpm_change,
-                'TrackPos': track_pos,
-                'Speed_Angle_Interaction': speed_angle_interaction,
-                'Speed_Position_Interaction': speed_position_interaction,
-                'SpeedX_MA': ma_features['SpeedX_MA'],
-                'SpeedY_MA': ma_features['SpeedY_MA'],
-                'Angle_MA': ma_features['Angle_MA']
-            }
-            
-            # Convert to DataFrame
-            df = pd.DataFrame([features])
-            
-            # Scale features if scaler exists
-            if self.scaler:
-                try:
-                    df = pd.DataFrame(self.scaler.transform(df), columns=df.columns)
-                except Exception as e:
-                    self.logger.error(f"Error scaling features: {str(e)}")
-                    # Fallback to unscaled features
-                    pass
-            
-            return df
-            
-        except Exception as e:
-            self.logger.error(f"Error preparing features: {str(e)}")
-            # Return empty DataFrame with correct columns
-            return pd.DataFrame(columns=[
-                'Speed_Magnitude', 'SpeedX', 'SpeedY', 'SpeedZ',
-                'Dist_From_Center', 'Angle', 'Angle_Change', 'RPM',
-                'RPM_Change', 'TrackPos', 'Speed_Angle_Interaction',
-                'Speed_Position_Interaction', 'SpeedX_MA', 'SpeedY_MA', 'Angle_MA'
-            ])
-    
-    def _apply_safety_constraints(self, predictions):
-        """Apply safety constraints to model predictions"""
-        try:
-            # Ensure steering is within bounds
-            predictions['steer'] = np.clip(predictions['steer'], -1.0, 1.0)
-            
-            # Ensure acceleration and brake are within bounds
-            predictions['accel'] = np.clip(predictions['accel'], 0.0, 1.0)
-            predictions['brake'] = np.clip(predictions['brake'], 0.0, 1.0)
-            
-            # Don't accelerate and brake simultaneously
-            if predictions['brake'] > 0.1:
-                predictions['accel'] = 0.0
-            
-            return predictions
-        except Exception as e:
-            self.logger.error(f"Error applying safety constraints: {str(e)}")
-            # Return safe default values
-            return {'steer': 0.0, 'accel': 0.0, 'brake': 0.0}
-    
-    def _auto_shift(self):
-        """Handle automatic gear shifting based on RPM thresholds"""
-        try:
-            current_gear = self.control.gear
-            current_rpm = self.state.getRpm()
-            current_speed = self.state.getSpeedX()
-            
-            # Handle reverse gear separately
-            if current_gear == -1:
-                if current_speed > 0.1:  # Moving forward
-                    self.control.gear = 1
-                    self.logger.info("Shifting from reverse to first gear")
-                return
-                
-            # Upshift logic
-            if current_gear in self.upshift_rpm and current_gear < 6:
-                if current_rpm > self.upshift_rpm[current_gear] and current_speed > 0:
-                    self.control.gear += 1
-                    self.logger.info(f"Auto upshift to gear {self.control.gear}")
-                    
-            # Downshift logic
-            if current_gear in self.downshift_rpm and current_gear > 1:
-                if current_rpm < self.downshift_rpm[current_gear]:
-                    # Smooth downshift with rev matching
-                    if self.control.accel > 0:
-                        self.control.accel = max(self.control.accel - 0.2, 0)
-                    self.control.gear -= 1
-                    self.logger.info(f"Auto downshift to gear {self.control.gear}")
-        except Exception as e:
-            self.logger.error(f"Error in auto shift: {str(e)}")
+            getter = f"get{col}"
+            if hasattr(self.state, getter):
+                return getattr(self.state, getter)()
+            return getattr(self.state, col)
+        except Exception:
+            return 0.0
+
+    def _validate_gear(self, gear, speed):
+        """Keep gear in [-1..6], no skips, handle reverse."""
+        gear = int(np.clip(gear, -1, 6))
+        # no skips
+        if abs(gear - self._prev_gear) > 1:
+            gear = self._prev_gear + np.sign(gear - self._prev_gear)
+        # if asked for reverse but going forward, force 1
+        if gear == -1 and speed > 0.1:
+            gear = 1
+        return gear
     
     def drive(self, msg):
-        """Process the current game state and return control commands"""
-        try:
-            # Update state
-            self.state.setFromMsg(msg)
+        """Called each step: parse state, predict, clamp, and apply controls."""
+        # parse sensors
+        self.state.setFromMsg(msg)
             
-            # Update feature history
-            self._update_history(self.state)
-            
-            # Skip prediction if we don't have enough history
-            if not all(len(hist) == self.window_size for hist in self.history.values()):
-                self.logger.info("Not enough history for prediction, using basic control")
-                # Use basic control if not enough history
-                self.control.setSteer(0.0)
-                self.control.setAccel(0.0)
-                self.control.setBrake(0.0)
-                self._auto_shift()
-                return self.control.toMsg()
-            
-            # Prepare features
-            features = self._prepare_features(self.state)
-            
-            # Make predictions
-            predictions = {}
-            for control, model in self.models.items():
-                try:
-                    predictions[control] = float(model.predict(features)[0])
-                except Exception as e:
-                    self.logger.error(f"Error predicting {control}: {str(e)}")
-                    predictions[control] = 0.0
-            
-            # Apply safety constraints
-            predictions = self._apply_safety_constraints(predictions)
-            
-            # Update control commands
-            self.control.setSteer(predictions['steer'])
-            self.control.setAccel(predictions['accel'])
-            self.control.setBrake(predictions['brake'])
-            
-            # Handle automatic gear shifting
-            self._auto_shift()
-            
-            return self.control.toMsg()
-            
-        except Exception as e:
-            self.logger.error(f"Error in drive method: {str(e)}")
-            # Return safe default control
-            self.control.setSteer(0.0)
-            self.control.setAccel(0.0)
-            self.control.setBrake(0.0)
+        # 1) build feature vector
+        feats = [self._get(col) for col in self.feature_cols]
+        x = np.array(feats).reshape(1, -1)
+
+        # 2) scale
+        x_s = self.scaler.transform(x)
+
+        # 3) predict continuous outputs
+        cont = self.cont_model.predict(x_s)[0]
+        if len(cont) != 4:
+            raise RuntimeError(f"Expected 4 continuous outputs, got {len(cont)}")
+        accel_p, brake_p, steer_p, clutch_p = cont
+
+        # 4) predict discrete gear
+        gear_p = int(self.gear_model.predict(x_s)[0])
+
+        # 5) clamp
+        accel  = float(np.clip(accel_p,  0.0, 1.0))
+        brake  = float(np.clip(brake_p,  0.0, 1.0))
+        steer  = float(np.clip(steer_p, -1.0, 1.0))
+        clutch = float(np.clip(clutch_p,0.0, 1.0))
+        speed  = self._get("SpeedX")
+
+        # 6) safety: no accel+brake together
+        if brake > 0.1:
+            accel = 0.0
+
+        # 7) validate gear transitions
+        gear = self._validate_gear(gear_p, speed)
+
+        # update history
+        self._prev_gear  = gear
+        self._prev_speed = speed
+
+        # 8) apply to control
+        self.control.setAccel(accel)
+        self.control.setBrake(brake)
+        self.control.setSteer(steer)
+        self.control.setClutch(clutch)
+        self.control.setGear(gear)
+
+        # Add centering logic
+        track_pos = self._get("TrackPos")
+        if abs(track_pos) > 0.1:  # If car is significantly off center
+            steer = steer - (track_pos * 0.5)  # Adjust steering to move towards center
+
+        # 9) return message
             return self.control.toMsg()
     
     def onShutDown(self):
-        """Clean up when the driver is shut down"""
-        self.logger.info("Driver shutting down")
+        pass
     
     def onRestart(self):
-        """Reset when the driver is restarted"""
-        self.logger.info("Driver restarting")
-        # Clear history
-        for key in self.history:
-            self.history[key] = [] 
+        self._prev_gear  = 1
+        self._prev_speed = 0.0

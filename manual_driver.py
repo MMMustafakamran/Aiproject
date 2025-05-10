@@ -30,9 +30,9 @@ class Driver(object):
         
         # RPM thresholds for automatic gear shifting
         self.upshift_rpm = {
-            1: 7000,
-            2: 7000,
-            3: 7000,
+            1: 6500,
+            2: 6600,
+            3: 6700,
             4: 7500,
             5: 7500,
             6: 7500
@@ -40,9 +40,9 @@ class Driver(object):
         self.downshift_rpm = {
             2: 2000,
             3: 2500,
-            4: 3000,
-            5: 3500,
-            6: 4000
+            4: 2000,
+            5: 2500,
+            6: 3000
         }
         
         # Variables for manual override tracking
