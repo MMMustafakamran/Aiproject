@@ -30,7 +30,7 @@ class LearningDriver(object):
         self.RACE       = 2
         self.UNKNOWN    = 3
         self.stage      = stage
-
+        
         # parser / state / control
         self.parser  = msgParser.MsgParser()
         self.state   = carState.CarState()
@@ -83,7 +83,7 @@ class LearningDriver(object):
             angles[i]      = -20 + (i-5) * 5
             angles[18 - i] =  20 - (i-5) * 5
         return self.parser.stringify({"init": angles})
-
+    
     def _get(self, col):
         """Helper: call getter or attribute, default 0.0 on error."""
         try:
@@ -125,7 +125,7 @@ class LearningDriver(object):
 
         # 4) predict discrete gear
         gear_p = int(self.gear_model.predict(x_s)[0])
-
+            
         # 5) clamp
         accel  = float(np.clip(accel_p,  0.0, 1.0))
         brake  = float(np.clip(brake_p,  0.0, 1.0))
@@ -136,10 +136,10 @@ class LearningDriver(object):
         # 6) safety: no accel+brake together
         if brake > 0.1:
             accel = 0.0
-
+            
         # 7) validate gear transitions
         gear = self._validate_gear(gear_p, speed)
-
+            
         # update history
         self._prev_gear  = gear
         self._prev_speed = speed
