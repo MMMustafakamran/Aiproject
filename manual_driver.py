@@ -57,6 +57,10 @@ class Driver(object):
         self.last_steer_direction = None
         self.is_stopped = True  # Initialize as True
         
+        # Acceleration control
+        self.target_accel = 0.0  # Target acceleration before steering reduction
+        self.MIN_ACCEL = 0.3     # Minimum acceleration percentage
+        
         # Start the manual input thread immediately
         self.manual_thread = threading.Thread(target=self._manual_input_loop, daemon=True)
         self.manual_thread.start()
@@ -74,6 +78,16 @@ class Driver(object):
             self.angles[18 - i] = 20 - (i-5) * 5
         
         return self.parser.stringify({'init': self.angles})
+    
+    def _adjust_accel_for_steering(self):
+        """Adjust acceleration based on steering magnitude."""
+        if self.control.accel > 0:
+            # Calculate reduction factor based on steering magnitude
+            steer_magnitude = abs(self.control.steer)
+            # Linear reduction from 1.0 to MIN_ACCEL based on steering
+            reduction = 1.0 - (steer_magnitude * (1.0 - self.MIN_ACCEL))
+            # Apply reduction to target acceleration
+            self.control.accel = max(self.target_accel * reduction, self.MIN_ACCEL)
     
     def _auto_shift(self):
         '''Handle automatic gear shifting based on RPM thresholds'''
@@ -117,6 +131,10 @@ class Driver(object):
             current_speed = self.state.getSpeedX()
             if current_speed is not None:
                 self.is_stopped = abs(current_speed) < 0.1
+            
+            # Adjust acceleration based on steering
+            self._adjust_accel_for_steering()
+            
             self._auto_shift()  # Check for automatic gear shifts
             return self.control.toMsg()
         except Exception as e:
@@ -134,6 +152,7 @@ class Driver(object):
         self.control.gear = 1
         self.is_stopped = True
         self.last_steer_direction = None
+        self.target_accel = 0.0
 
     def _manual_input_loop(self):
         '''Continuously listen for keyboard input and update control values.'''
@@ -155,15 +174,18 @@ class Driver(object):
                                     else:
                                         self.control.brake = min(self.control.brake + 0.1, 1.0)
                                         self.control.accel = 0.0
+                                        self.target_accel = 0.0
                                         print("Braking in reverse:", self.control.brake)
                                 else:
-                                    self.control.accel = min(self.control.accel + 0.1, 1.0)
+                                    self.target_accel = min(self.target_accel + 0.1, 1.0)
+                                    self.control.accel = self.target_accel
                                     self.control.brake = 0.0
                                     print("Accelerate:", self.control.accel)
                                     
                             elif key == b'P':  # Down arrow
                                 if self.control.gear == -1:  # In reverse
-                                    self.control.accel = min(self.control.accel + 0.1, 1.0)
+                                    self.target_accel = min(self.target_accel + 0.1, 1.0)
+                                    self.control.accel = self.target_accel
                                     self.control.brake = 0.0
                                     print("Accelerate in reverse:", self.control.accel)
                                 elif self.is_stopped and self.control.gear > 0:
@@ -172,6 +194,7 @@ class Driver(object):
                                 else:
                                     self.control.brake = min(self.control.brake + 0.1, 1.0)
                                     self.control.accel = 0.0
+                                    self.target_accel = 0.0
                                     print("Brake:", self.control.brake)
                                     
                             elif key == b'M':  # Right arrow (inverted: behaves as left)
@@ -203,6 +226,7 @@ class Driver(object):
                                 if self.control.gear > -1:
                                     if self.control.accel > 0:
                                         self.control.accel = max(self.control.accel - 0.1, 0)
+                                        self.target_accel = self.control.accel
                                     self.control.gear -= 1
                                     self.last_manual_shift_time = time.time()
                                     self.is_auto_shifting = False
@@ -228,12 +252,14 @@ class Driver(object):
                             if key == '\x1b':  # Escape sequence for arrow keys
                                 seq = sys.stdin.read(2)
                                 if seq == '[A':  # Up arrow: accelerate
-                                    self.control.accel = min(self.control.accel + 0.1, 1.0)
+                                    self.target_accel = min(self.target_accel + 0.1, 1.0)
+                                    self.control.accel = self.target_accel
                                     self.control.brake = 0.0
                                     print("Accelerate:", self.control.accel)
                                 elif seq == '[B':  # Down arrow: brake
                                     self.control.brake = min(self.control.brake + 0.1, 1.0)
                                     self.control.accel = 0.0
+                                    self.target_accel = 0.0
                                     print("Brake:", self.control.brake)
                                 elif seq == '[C':  # Right arrow (inverted: behaves as left)
                                     if self.last_steer_direction != "left" or self.control.steer > 0:
@@ -259,6 +285,7 @@ class Driver(object):
                                 if self.control.gear > -1:
                                     if self.control.accel > 0:
                                         self.control.accel = max(self.control.accel - 0.1, 0)
+                                        self.target_accel = self.control.accel
                                     self.control.gear -= 1
                                     print("Gear down:", self.control.gear)
                         time.sleep(0.05)

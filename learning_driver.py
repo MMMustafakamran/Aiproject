@@ -173,7 +173,7 @@ class LearningDriver(object):
         """Called each step: parse state, predict action, and apply controls."""
         # parse sensors
         self.state.setFromMsg(msg)
-        
+            
         # 1) build feature vector
         feats = [self._get(col) for col in self.feature_cols]
         x = np.array(feats).reshape(1, -1)
