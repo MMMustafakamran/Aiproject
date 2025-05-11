@@ -3,8 +3,8 @@
 learning_driver.py
 
 A learning-based driver for SCRC that loads
-pre-trained models (cont_model, gear_model) and a scaler,
-then at each step predicts the controls using only
+pre-trained action classification model and a scaler,
+then at each step predicts the next action using only
 features present in carState.py.
 """
 
@@ -18,8 +18,8 @@ import carControl
 
 class LearningDriver(object):
     """
-    A driver object for the SCRC that uses scikit-learn models
-    to predict Accel, Brake, Steer, Clutch (continuous) and Gear (discrete).
+    A driver object for the SCRC that uses scikit-learn model
+    to predict discrete actions (left, right, brake, throttle, etc.).
     """
     def __init__(self, stage,
                  model_dir="trained_models/Model-01",
@@ -40,11 +40,13 @@ class LearningDriver(object):
         if not os.path.isdir(model_dir):
             raise FileNotFoundError(f"Model directory not found: {model_dir}")
         
-        # load scaler and models
+        # load scaler, model, and action mapping
         try:
-            self.scaler     = joblib.load(os.path.join(model_dir, "scaler.joblib"))
-            self.cont_model = joblib.load(os.path.join(model_dir, "cont_model.joblib"))
-            self.gear_model = joblib.load(os.path.join(model_dir, "gear_model.joblib"))
+            self.scaler = joblib.load(os.path.join(model_dir, "scaler.joblib"))
+            self.model = joblib.load(os.path.join(model_dir, "action_model.joblib"))
+            self.action_mapping = joblib.load(os.path.join(model_dir, "action_mapping.joblib"))
+            # Create reverse mapping for easier lookup
+            self.reverse_mapping = {v: k for k, v in self.action_mapping.items()}
         except Exception as e:
             raise RuntimeError(f"Error loading models: {e}")
 
@@ -72,6 +74,11 @@ class LearningDriver(object):
         # track previous gear/speed for safety
         self._prev_gear  = 1
         self._prev_speed = 0.0
+        
+        # Control thresholds
+        self.STEER_THRESHOLD = 0.1
+        self.ACCEL_THRESHOLD = 0.1
+        self.BRAKE_THRESHOLD = 0.1
     
     def init(self):
         """Return the init string (rangefinder angles)."""
@@ -105,8 +112,38 @@ class LearningDriver(object):
             gear = 1
         return gear
     
+    def _apply_action(self, action):
+        """Apply the predicted action to the car controls."""
+        # Reset all controls
+        self.control.setAccel(0.0)
+        self.control.setBrake(0.0)
+        self.control.setSteer(0.0)
+        self.control.setClutch(0.0)
+        
+        # Apply action
+        if action == "left":
+            self.control.setSteer(-1.0)
+        elif action == "right":
+            self.control.setSteer(1.0)
+        elif action == "brake":
+            self.control.setBrake(1.0)
+        elif action == "throttle":
+            self.control.setAccel(1.0)
+        elif action == "gear_up":
+            self.control.setGear(self._prev_gear + 1)
+        elif action == "gear_down":
+            self.control.setGear(self._prev_gear - 1)
+        elif action == "coast":
+            pass  # All controls already at 0
+        
+        # Add centering logic
+        track_pos = self._get("TrackPos")
+        if abs(track_pos) > 0.1:  # If car is significantly off center
+            current_steer = self.control.getSteer()
+            self.control.setSteer(current_steer - (track_pos * 0.5))  # Adjust steering to move towards center
+    
     def drive(self, msg):
-        """Called each step: parse state, predict, clamp, and apply controls."""
+        """Called each step: parse state, predict action, and apply controls."""
         # parse sensors
         self.state.setFromMsg(msg)
             
@@ -117,47 +154,19 @@ class LearningDriver(object):
         # 2) scale
         x_s = self.scaler.transform(x)
 
-        # 3) predict continuous outputs
-        cont = self.cont_model.predict(x_s)[0]
-        if len(cont) != 4:
-            raise RuntimeError(f"Expected 4 continuous outputs, got {len(cont)}")
-        accel_p, brake_p, steer_p, clutch_p = cont
-
-        # 4) predict discrete gear
-        gear_p = int(self.gear_model.predict(x_s)[0])
+        # 3) predict action
+        action_idx = self.model.predict(x_s)[0]
+        action = self.reverse_mapping[action_idx]
+        
+        # 4) apply action
+        self._apply_action(action)
             
-        # 5) clamp
-        accel  = float(np.clip(accel_p,  0.0, 1.0))
-        brake  = float(np.clip(brake_p,  0.0, 1.0))
-        steer  = float(np.clip(steer_p, -1.0, 1.0))
-        clutch = float(np.clip(clutch_p,0.0, 1.0))
-        speed  = self._get("SpeedX")
+        # 5) update history
+        self._prev_gear = self.control.getGear()
+        self._prev_speed = self._get("SpeedX")
 
-        # 6) safety: no accel+brake together
-        if brake > 0.1:
-            accel = 0.0
-            
-        # 7) validate gear transitions
-        gear = self._validate_gear(gear_p, speed)
-            
-        # update history
-        self._prev_gear  = gear
-        self._prev_speed = speed
-
-        # 8) apply to control
-        self.control.setAccel(accel)
-        self.control.setBrake(brake)
-        self.control.setSteer(steer)
-        self.control.setClutch(clutch)
-        self.control.setGear(gear)
-
-        # Add centering logic
-        track_pos = self._get("TrackPos")
-        if abs(track_pos) > 0.1:  # If car is significantly off center
-            steer = steer - (track_pos * 0.5)  # Adjust steering to move towards center
-
-        # 9) return message
-            return self.control.toMsg()
+        # 6) return message
+        return self.control.toMsg()
     
     def onShutDown(self):
         pass

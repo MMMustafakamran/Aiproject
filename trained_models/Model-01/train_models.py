@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-data_preprocessing.py
+train_models.py
 
 1) Load racing log CSVs
 2) Basic cleaning (dedupe, drop NaNs, filter outliers)
-3) Extract features/targets
-4) Split into train/test and scale features
-5) Train continuous and discrete control models
-6) Evaluate on test set
-7) Save scaler + trained models
+3) Convert continuous controls to discrete actions
+4) Extract features/targets
+5) Split into train/test and scale features
+6) Train action classification model
+7) Evaluate on test set
+8) Save scaler + trained model
 """
 
 import glob
@@ -18,32 +19,76 @@ import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.multioutput import MultiOutputRegressor
 import joblib
 from tqdm import tqdm
 import multiprocessing
 
 # ----- CONFIG -----
-DATA_DIRS   = ["results/manual", "results/ruleai"]  # List of directories to load data from
+DATA_DIRS   = ["results/manual"]  # List of directories to load data from
 MODEL_DIR   = "trained_models/Model-01"
 TEST_SIZE   = 0.2
 RANDOM_SEED = 42
 BATCH_SIZE  = 10000  # Process data in batches
 N_JOBS      = max(1, multiprocessing.cpu_count() - 1)  # Use all but one CPU core
 
-# 1) Define which columns to use
+# Define which columns to use
 FEATURE_COLS = [
     "SpeedX", "SpeedY", "SpeedZ",
     "TrackPos", "Angle", "RPM",
     "CurLapTime", "DistFromStart", "DistRaced",
     "Fuel", "Damage"
-    # if you logged track sensors, add them here:
-    # "TrackSensor0", ..., "TrackSensor18"
 ]
-CONT_TARGETS = ["Accel", "Brake", "Steer", "Clutch"]
-DISC_TARGET  = "Gear_Control"
+
+# Action thresholds for converting continuous controls to discrete actions
+STEER_THRESHOLD = 0.1
+ACCEL_THRESHOLD = 0.1
+BRAKE_THRESHOLD = 0.1
+GEAR_THRESHOLD = 0.5
+
+def convert_to_action(row):
+    """Convert continuous controls to discrete action."""
+    steer = row['Steer']
+    accel = row['Accel']
+    brake = row['Brake']
+    gear = row['Gear_Control']
+    prev_gear = row.get('Prev_Gear', 1)  # Default to 1 if not available
+    
+    # Determine steering action
+    if steer < -STEER_THRESHOLD:
+        steer_action = "left"
+    elif steer > STEER_THRESHOLD:
+        steer_action = "right"
+    else:
+        steer_action = "straight"
+    
+    # Determine acceleration/braking action
+    if brake > BRAKE_THRESHOLD:
+        accel_action = "brake"
+    elif accel > ACCEL_THRESHOLD:
+        accel_action = "throttle"
+    else:
+        accel_action = "coast"
+    
+    # Determine gear action
+    if gear > prev_gear:
+        gear_action = "gear_up"
+    elif gear < prev_gear:
+        gear_action = "gear_down"
+    else:
+        gear_action = "maintain_gear"
+    
+    # Combine actions (prioritize steering and acceleration over gear changes)
+    if accel_action == "brake":
+        return "brake"
+    elif steer_action != "straight":
+        return steer_action
+    elif accel_action == "throttle":
+        return "throttle"
+    elif gear_action != "maintain_gear":
+        return gear_action
+    else:
+        return "coast"
 
 def load_csv_batch(file_path):
     """Load and clean a single CSV file."""
@@ -51,7 +96,7 @@ def load_csv_batch(file_path):
         df = pd.read_csv(file_path)
         # Basic cleaning
         df.drop_duplicates(inplace=True)
-        df.dropna(subset=FEATURE_COLS + CONT_TARGETS + [DISC_TARGET], inplace=True)
+        df.dropna(subset=FEATURE_COLS + ['Steer', 'Accel', 'Brake', 'Gear_Control'], inplace=True)
         # Filter outliers
         df = df[
             (df["SpeedX"] >= 0) & (df["SpeedX"] <= 400) &
@@ -66,7 +111,7 @@ def load_csv_batch(file_path):
 def main():
     os.makedirs(MODEL_DIR, exist_ok=True)
 
-    # 2) Load all CSVs from all directories using parallel processing
+    # Load all CSVs from all directories using parallel processing
     all_csv_files = []
     for data_dir in DATA_DIRS:
         csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
@@ -89,75 +134,73 @@ def main():
     df = pd.concat(dfs, ignore_index=True)
     print(f"Initial dataset size: {len(df):,} rows")
 
-    # 3) Extract features & targets
+    # Add previous gear column for gear change detection
+    df['Prev_Gear'] = df['Gear_Control'].shift(1).fillna(1)
+
+    # Convert continuous controls to discrete actions
+    print("\nConverting continuous controls to discrete actions...")
+    df['action'] = df.apply(convert_to_action, axis=1)
+    
+    # Create action mapping
+    unique_actions = df['action'].unique()
+    action_mapping = {action: idx for idx, action in enumerate(unique_actions)}
+    print("\nAction mapping:")
+    for action, idx in action_mapping.items():
+        print(f"  {action}: {idx}")
+
+    # Extract features & targets
     print("\nPreparing features and targets:")
     X = df[FEATURE_COLS].values
-    y_cont = df[CONT_TARGETS].values
-    y_disc = df[DISC_TARGET].values.astype(int)
+    y = df['action'].map(action_mapping).values
     print(f"  - Features shape: {X.shape}")
-    print(f"  - Continuous targets shape: {y_cont.shape}")
-    print(f"  - Discrete target shape: {y_disc.shape}")
+    print(f"  - Target shape: {y.shape}")
 
-    # 4) Train/test split
+    # Train/test split
     print(f"\nSplitting into train/test (test_size={TEST_SIZE})...")
-    X_train, X_test, \
-    y_cont_train, y_cont_test, \
-    y_disc_train, y_disc_test = train_test_split(
-        X, y_cont, y_disc,
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
         test_size=TEST_SIZE,
         random_state=RANDOM_SEED
     )
     print(f"  - Training set size: {len(X_train):,} samples")
     print(f"  - Test set size: {len(X_test):,} samples")
 
-    # 5) Fit scaler on train features
+    # Fit scaler on train features
     print("\nFitting StandardScaler on training features...")
     scaler = StandardScaler().fit(X_train)
     X_train_s = scaler.transform(X_train)
     X_test_s  = scaler.transform(X_test)
 
-    # 6) Train continuous-output model (MLP) with optimized parameters
-    print("\nTraining MultiOutput MLPRegressor for continuous controls...")
-    mlp = MultiOutputRegressor(
-        MLPRegressor(
-            hidden_layer_sizes=(128, 64),  # Increased first layer size
-            activation="relu",
-            solver="adam",
-            max_iter=200,
-            early_stopping=True,  # Enable early stopping
-            validation_fraction=0.1,
-            n_iter_no_change=10,
-            batch_size='auto',
-            random_state=RANDOM_SEED
-        ),
-        n_jobs=N_JOBS  # Enable parallel processing
-    )
-    mlp.fit(X_train_s, y_cont_train)
-
-    # 7) Train discrete-output model (Random Forest) with optimized parameters
-    print("\nTraining RandomForestClassifier for gear control...")
-    rfc = RandomForestClassifier(
+    # Train action classification model
+    print("\nTraining RandomForestClassifier for action classification...")
+    model = RandomForestClassifier(
         n_estimators=100,
-        max_depth=20,  # Limit tree depth
-        min_samples_split=10,  # Increase minimum samples for split
-        min_samples_leaf=5,    # Increase minimum samples for leaf
-        n_jobs=N_JOBS,         # Enable parallel processing
+        max_depth=20,
+        min_samples_split=10,
+        min_samples_leaf=5,
+        n_jobs=N_JOBS,
         random_state=RANDOM_SEED
     )
-    rfc.fit(X_train_s, y_disc_train)
+    model.fit(X_train_s, y_train)
 
-    # 8) Evaluate
-    print("\nEvaluating models:")
-    cont_score = mlp.score(X_test_s, y_cont_test)
-    disc_acc   = rfc.score(X_test_s, y_disc_test)
-    print(f"  - Continuous control R² score on test: {cont_score:.3f}")
-    print(f"  - Gear-control accuracy on test:    {disc_acc:.3%}")
+    # Evaluate
+    print("\nEvaluating model:")
+    train_acc = model.score(X_train_s, y_train)
+    test_acc  = model.score(X_test_s, y_test)
+    print(f"  - Training accuracy: {train_acc:.3%}")
+    print(f"  - Test accuracy:     {test_acc:.3%}")
 
-    # 9) Save scaler + models
-    print("\nSaving models and scaler...")
+    # Print feature importances
+    print("\nFeature importances:")
+    importances = model.feature_importances_
+    for feat, imp in sorted(zip(FEATURE_COLS, importances), key=lambda x: x[1], reverse=True):
+        print(f"  - {feat}: {imp:.3f}")
+
+    # Save models and metadata
+    print("\nSaving model, scaler, and metadata...")
     joblib.dump(scaler, os.path.join(MODEL_DIR, "scaler.joblib"))
-    joblib.dump(mlp,    os.path.join(MODEL_DIR, "cont_model.joblib"))
-    joblib.dump(rfc,    os.path.join(MODEL_DIR, "gear_model.joblib"))
+    joblib.dump(model, os.path.join(MODEL_DIR, "action_model.joblib"))
+    joblib.dump(action_mapping, os.path.join(MODEL_DIR, "action_mapping.joblib"))
     print("✓ Models saved successfully")
 
     print("\nData preprocessing and model training complete.")
