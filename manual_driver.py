@@ -1,4 +1,4 @@
-#LEARNING BASED DRIVER
+# LEARNING BASED DRIVER
 '''
 manual driving mode only.
 run using: python pyclient.py --manual
@@ -15,7 +15,6 @@ class Driver(object):
     '''
     A driver object for the SCRC that operates in manual mode only.
     '''
-
     def __init__(self, stage):
         '''Constructor'''
         self.WARM_UP = 0
@@ -46,9 +45,9 @@ class Driver(object):
         self.downshift_rpm = {
             2: 2000,
             3: 2500,
-            4: 2000,
-            5: 2500,
-            6: 3000
+            4: 3000,
+            5: 4000,
+            6: 4500
         }
         
         # Variables for manual override tracking
@@ -88,7 +87,7 @@ class Driver(object):
         # Safety check for None values
         if current_rpm is None or current_speed is None:
             return
-            
+        
         # Handle reverse gear separately
         if current_gear == -1:
             if current_speed > 0.1:  # Moving forward
@@ -182,8 +181,8 @@ class Driver(object):
                                 else:
                                     self.control.steer -= 0.1
                                     self.control.steer = max(self.control.steer, -1.0)
-                                print("Steer left:", self.control.steer)
-                                
+                                    print("Steer left:", self.control.steer)
+                                    
                             elif key == b'K':  # Left arrow (inverted: behaves as right)
                                 if self.last_steer_direction != "right" or self.control.steer < 0:
                                     self.control.steer = 0.0
@@ -191,7 +190,7 @@ class Driver(object):
                                 else:
                                     self.control.steer += 0.1
                                     self.control.steer = min(self.control.steer, 1.0)
-                                print("Steer right:", self.control.steer)
+                                    print("Steer right:", self.control.steer)
                         else:
                             # Gear controls: "z" for gear up, "x" for gear down
                             if key.lower() == b'z':
@@ -213,7 +212,7 @@ class Driver(object):
                     if not self.is_auto_shifting and time.time() - self.last_manual_shift_time > self.manual_override_timeout:
                         self.is_auto_shifting = True
                         print("Returning to automatic gear shifting")
-                        
+                    
                     time.sleep(0.05)
             else:
                 # For Unix-like systems
@@ -243,7 +242,7 @@ class Driver(object):
                                     else:
                                         self.control.steer -= 0.1
                                         self.control.steer = max(self.control.steer, -1.0)
-                                    print("Steer left:", self.control.steer)
+                                        print("Steer left:", self.control.steer)
                                 elif seq == '[D':  # Left arrow (inverted: behaves as right)
                                     if self.last_steer_direction != "right" or self.control.steer < 0:
                                         self.control.steer = 0.0
@@ -251,7 +250,7 @@ class Driver(object):
                                     else:
                                         self.control.steer += 0.1
                                         self.control.steer = min(self.control.steer, 1.0)
-                                    print("Steer right:", self.control.steer)
+                                        print("Steer right:", self.control.steer)
                             elif key.lower() == 'z':
                                 if self.control.gear < 6:
                                     self.control.gear += 1

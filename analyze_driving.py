@@ -41,18 +41,32 @@ def analyze_steering(data):
     print(f"Average left steering: {left_steer:.3f}")
     print(f"Average right steering: {right_steer:.3f}")
     
-    # Analyze steering vs track position using fixed bins
+    # Analyze steering vs track position using custom bins
     print("\nSteering vs Track Position:")
-    track_pos_bins = [-1.0, -0.5, 0.0, 0.5, 1.0]
-    track_pos_stats = data.groupby(pd.cut(data['TrackPos'], bins=track_pos_bins))['Steer'].agg(['mean', 'std', 'count'])
+    track_bins = [-1.0, -0.5, 0.0, 0.5, 1.0]
+    track_pos_stats = data.groupby(pd.cut(data['TrackPos'], bins=track_bins))['Steer'].agg(['mean', 'std', 'count'])
     print(track_pos_stats)
+    
+    # Analyze steering vs speed
+    print("\nSteering vs Speed:")
+    speed_bins = [0, 50, 100, 150, 200, 250]
+    speed_stats = data.groupby(pd.cut(data['SpeedX'], bins=speed_bins))['Steer'].agg(['mean', 'std', 'count'])
+    print(speed_stats)
+    
+    # Analyze steering vs angle
+    print("\nSteering vs Angle:")
+    angle_bins = [-3.14, -1.57, 0, 1.57, 3.14]
+    angle_stats = data.groupby(pd.cut(data['Angle'], bins=angle_bins))['Steer'].agg(['mean', 'std', 'count'])
+    print(angle_stats)
     
     return {
         'mean_steer': data['Steer'].mean(),
         'std_steer': data['Steer'].std(),
         'left_bias': left_steer,
         'right_bias': right_steer,
-        'track_pos_stats': track_pos_stats
+        'track_pos_stats': track_pos_stats,
+        'speed_stats': speed_stats,
+        'angle_stats': angle_stats
     }
 
 def analyze_correlations(data):
@@ -68,16 +82,6 @@ def analyze_correlations(data):
             print(f"{feature}: {corr:.3f}")
     
     return corr_matrix
-
-def analyze_speed_steering(data):
-    """Analyze steering behavior at different speeds."""
-    speed_bins = [0, 20, 40, 60, 80, 100]
-    speed_stats = data.groupby(pd.cut(data['SpeedX'], bins=speed_bins))['Steer'].agg(['mean', 'std', 'count'])
-    
-    print("\nSteering Behavior at Different Speeds:")
-    print(speed_stats)
-    
-    return speed_stats
 
 def main():
     # Load data
@@ -99,10 +103,6 @@ def main():
     print("\nAnalyzing feature correlations...")
     corr_matrix = analyze_correlations(data)
     
-    # Analyze speed-based steering
-    print("\nAnalyzing speed-based steering behavior...")
-    speed_stats = analyze_speed_steering(data)
-    
     # Print recommendations based on analysis
     print("\nRecommendations:")
     if abs(steering_stats['mean_steer']) > 0.1:
@@ -118,14 +118,20 @@ def main():
         print("- Model tends to steer left more than right")
     else:
         print("- Model tends to steer right more than left")
-    
+        
     # Additional insights
     print("\nAdditional Insights:")
-    print("- Track position range:", data['TrackPos'].min(), "to", data['TrackPos'].max())
-    print("- Average speed:", data['SpeedX'].mean())
-    print("- Speed range:", data['SpeedX'].min(), "to", data['SpeedX'].max())
-    print("- Average RPM:", data['RPM'].mean())
-    print("- Average track angle:", data['Angle'].mean())
+    # Check if steering is more extreme at higher speeds
+    high_speed_steer = data[data['SpeedX'] > 100]['Steer'].std()
+    low_speed_steer = data[data['SpeedX'] < 50]['Steer'].std()
+    if high_speed_steer > low_speed_steer * 1.5:
+        print("- Steering is more aggressive at high speeds")
+    
+    # Check if steering is more extreme when far from center
+    far_steer = data[abs(data['TrackPos']) > 0.5]['Steer'].std()
+    center_steer = data[abs(data['TrackPos']) < 0.2]['Steer'].std()
+    if far_steer > center_steer * 1.5:
+        print("- Steering is more aggressive when far from track center")
 
 if __name__ == "__main__":
     main() 

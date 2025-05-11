@@ -3,7 +3,7 @@
 learning_driver.py
 
 A learning-based driver for SCRC that loads
-pre-trained action classification model and a scaler,
+pre-trained action classification model and feature pipeline,
 then at each step predicts the next action using only
 features present in carState.py.
 """
@@ -40,9 +40,9 @@ class LearningDriver(object):
         if not os.path.isdir(model_dir):
             raise FileNotFoundError(f"Model directory not found: {model_dir}")
         
-        # load scaler, model, and action mapping
+        # load feature pipeline, model, and action mapping
         try:
-            self.scaler = joblib.load(os.path.join(model_dir, "scaler.joblib"))
+            self.feature_pipeline = joblib.load(os.path.join(model_dir, "feature_pipeline.joblib"))
             self.model = joblib.load(os.path.join(model_dir, "action_model.joblib"))
             self.action_mapping = joblib.load(os.path.join(model_dir, "action_mapping.joblib"))
             # Create reverse mapping for easier lookup
@@ -79,6 +79,10 @@ class LearningDriver(object):
         self.STEER_THRESHOLD = 0.1
         self.ACCEL_THRESHOLD = 0.1
         self.BRAKE_THRESHOLD = 0.1
+        
+        # RPM thresholds for gear changes
+        self.UPSHIFT_RPM = 6500
+        self.DOWNSHIFT_RPM = 3000
     
     def init(self):
         """Return the init string (rangefinder angles)."""
@@ -112,6 +116,22 @@ class LearningDriver(object):
             gear = 1
         return gear
     
+    def _check_gear_change(self):
+        """Check if gear change is needed based on RPM."""
+        current_rpm = self._get("Rpm")
+        current_gear = self.control.getGear()
+        current_speed = self._get("SpeedX")
+        
+        # Upshift logic
+        if current_rpm > self.UPSHIFT_RPM and current_gear < 6 and current_speed > 0:
+            return "gear_up"
+        
+        # Downshift logic
+        if current_rpm < self.DOWNSHIFT_RPM and current_gear > 1:
+            return "gear_down"
+        
+        return None
+    
     def _apply_action(self, action):
         """Apply the predicted action to the car controls."""
         # Reset all controls
@@ -119,6 +139,11 @@ class LearningDriver(object):
         self.control.setBrake(0.0)
         self.control.setSteer(0.0)
         self.control.setClutch(0.0)
+        
+        # Check if gear change is needed based on RPM
+        gear_action = self._check_gear_change()
+        if gear_action:
+            action = gear_action  # Override with gear change if needed
         
         # Apply action
         if action == "left":
@@ -130,9 +155,11 @@ class LearningDriver(object):
         elif action == "throttle":
             self.control.setAccel(1.0)
         elif action == "gear_up":
-            self.control.setGear(self._prev_gear + 1)
+            new_gear = self._validate_gear(self._prev_gear + 1, self._get("SpeedX"))
+            self.control.setGear(new_gear)
         elif action == "gear_down":
-            self.control.setGear(self._prev_gear - 1)
+            new_gear = self._validate_gear(self._prev_gear - 1, self._get("SpeedX"))
+            self.control.setGear(new_gear)
         elif action == "coast":
             pass  # All controls already at 0
         
@@ -146,21 +173,21 @@ class LearningDriver(object):
         """Called each step: parse state, predict action, and apply controls."""
         # parse sensors
         self.state.setFromMsg(msg)
-            
+        
         # 1) build feature vector
         feats = [self._get(col) for col in self.feature_cols]
         x = np.array(feats).reshape(1, -1)
 
-        # 2) scale
-        x_s = self.scaler.transform(x)
+        # 2) apply feature engineering pipeline
+        x_processed = self.feature_pipeline.transform(x)
 
         # 3) predict action
-        action_idx = self.model.predict(x_s)[0]
+        action_idx = self.model.predict(x_processed)[0]
         action = self.reverse_mapping[action_idx]
         
         # 4) apply action
         self._apply_action(action)
-            
+        
         # 5) update history
         self._prev_gear = self.control.getGear()
         self._prev_speed = self._get("SpeedX")
